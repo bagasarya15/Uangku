@@ -11,6 +11,7 @@ const AuthUser = () => {
 
 	try {
 		const decodedToken = jwtDecode(token);
+
 		const handleLogout = () => {
 			localStorage.removeItem("token");
 			navigate("/login");

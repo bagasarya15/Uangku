@@ -1,72 +1,32 @@
-import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import { Layout, Menu, Breadcrumb, theme } from "antd";
-import { createBrowserRouter } from "react-router-dom";
-import { RouterList } from "../layouts/route";
-import {
-	DesktopOutlined,
-	FileOutlined,
-	PieChartOutlined,
-	TeamOutlined,
-	UserOutlined,
-} from "@ant-design/icons";
-
-const { Header, Content, Footer, Sider } = Layout;
-
-function getItem(label, key, icon, children) {
-	return {
-		key,
-		icon,
-		children,
-		label,
-	};
-}
-
-const items = [
-	getItem("Option 1", "1", <PieChartOutlined />),
-	getItem("Option 2", "2", <DesktopOutlined />),
-	getItem("User", "sub1", <UserOutlined />, [
-		getItem("Tom", "3"),
-		getItem("Bill", "4"),
-		getItem("Alex", "5"),
-	]),
-	getItem("Team", "sub2", <TeamOutlined />, [
-		getItem("Team 1", "6"),
-		getItem("Team 2", "8"),
-	]),
-	getItem("Files", "9", <FileOutlined />),
-];
+import Sidebar from "./Sidebar";
+import { useState } from "react";
+import CustomHeader from "./Header";
+import CustomFooter from "./Footer";
+import { Layout, theme } from "antd";
+import BreadCrumb from "./BreadCrumb";
+import { Outlet, useLocation } from "react-router-dom";
 
 const MainLayout = () => {
+	const { Content } = Layout;
+	const location = useLocation();
 	const [collapsed, setCollapsed] = useState(false);
 	const {
 		token: { colorBgContainer, borderRadiusLG },
 	} = theme.useToken();
 
-	const router = createBrowserRouter(RouterList);
-
 	return (
 		<Layout style={{ minHeight: "100vh" }}>
-			<Sider
-				collapsible
-				collapsed={collapsed}
-				onCollapse={(value) => setCollapsed(value)}
-			>
-				<div className="demo-logo-vertical" />
-				<Menu
-					theme="dark"
-					defaultSelectedKeys={["1"]}
-					mode="inline"
-					items={items}
-				/>
-			</Sider>
+			{/* Sidebar Component */}
+			<Sidebar collapsed={collapsed} />
 			<Layout>
-				<Header style={{ padding: 0, background: colorBgContainer }} />
+				{/* Header Component */}
+				<CustomHeader
+					collapsed={collapsed}
+					setCollapsed={setCollapsed}
+				/>
 				<Content style={{ margin: "0 16px" }}>
-					<Breadcrumb style={{ margin: "16px 0" }}>
-						<Breadcrumb.Item>User</Breadcrumb.Item>
-						<Breadcrumb.Item>Bill</Breadcrumb.Item>
-					</Breadcrumb>
+					{/* BreadCrumb Component */}
+					<BreadCrumb location={location} />
 					<div
 						style={{
 							padding: 24,
@@ -75,20 +35,11 @@ const MainLayout = () => {
 							borderRadius: borderRadiusLG,
 						}}
 					>
-						<Routes>
-							{RouterList.map((route) => (
-								<Route
-									key={route.path}
-									path={route.path}
-									element={route.element}
-								/>
-							))}
-						</Routes>
+						<Outlet />
 					</div>
 				</Content>
-				<Footer style={{ textAlign: "center" }}>
-					Uangku ©{new Date().getFullYear()} Created by Bagas Arya
-				</Footer>
+				{/* Footer Component */}
+				<CustomFooter />
 			</Layout>
 		</Layout>
 	);

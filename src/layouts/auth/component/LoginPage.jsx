@@ -1,10 +1,11 @@
-import { IconAlertCircle, IconEye, IconEyeOff } from "@tabler/icons-react";
-import React, { useEffect, useState } from "react";
+import AuthUser from "../../utils/AuthUser";
+import { IconX } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import ToggleComponent from "../../utils/ToggleComponent";
+import React, { useEffect, useState } from "react";
 import { apiLogin } from "../../../services/AuthApi";
-import { IconX } from "@tabler/icons-react";
+import ToggleComponent from "../../utils/ToggleComponent";
+import { IconAlertCircle, IconEye, IconEyeOff } from "@tabler/icons-react";
 import {
 	Alert,
 	Box,
@@ -12,7 +13,6 @@ import {
 	Collapse,
 	IconButton,
 } from "@mui/material";
-import AuthUser from "../../utils/AuthUser";
 
 const LoginPage = () => {
 	const [err, setErr] = useState({});
@@ -47,7 +47,7 @@ const LoginPage = () => {
 			const data = await apiLogin(params);
 			if (data.status === 200) {
 				localStorage.setItem("token", JSON.stringify(data.token));
-				navigate("/dashboard");
+				navigate("/");
 			}
 		} catch (error) {
 			setLoading(true);
@@ -63,7 +63,7 @@ const LoginPage = () => {
 
 	useEffect(() => {
 		if (token) {
-			navigate("/dashboard");
+			navigate("/");
 		}
 	}, [token]);
 
@@ -128,6 +128,7 @@ const LoginPage = () => {
 								errors.usernameOrEmail ? "border-red-400 " : ""
 							}`}
 							type="text"
+							autoComplete="off"
 							placeholder="Username or Email"
 							{...register(
 								"usernameOrEmail",

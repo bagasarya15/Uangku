@@ -1,9 +1,9 @@
 import validate from "./Validate";
-import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import ToggleComponent from "../../utils/ToggleComponent";
+import React, { useEffect, useState } from "react";
 import { apiRegister } from "../../../services/AuthApi";
+import ToggleComponent from "../../utils/ToggleComponent";
 import {
 	IconAlertCircle,
 	IconEye,
@@ -175,6 +175,7 @@ const RegisterPage = () => {
 								errors.username ? "border-red-400 " : ""
 							}`}
 							type="text"
+							autoComplete="off"
 							placeholder="Username"
 							{...register("username", validate.username)}
 						/>
@@ -194,6 +195,7 @@ const RegisterPage = () => {
 								errors.name ? "border-red-400 " : ""
 							}`}
 							type="text"
+							autoComplete="off"
 							placeholder="Name"
 							{...register("name", validate.name)}
 						/>
