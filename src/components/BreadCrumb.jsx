@@ -14,7 +14,7 @@ const BreadCrumb = ({ location }) => {
 				{" "}
 				<p className="text-blue-500">Menu</p>
 			</Link>{" "}
-			/ <Link to={currentRoute.path}>{currentRoute.menu}</Link>
+			/ <Link to={currentRoute.path}>{currentRoute.title}</Link>
 		</Breadcrumb.Item>
 	) : null;
 

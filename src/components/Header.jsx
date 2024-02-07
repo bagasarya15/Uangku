@@ -7,6 +7,7 @@ import {
 	MenuUnfoldOutlined,
 	MenuFoldOutlined,
 } from "@ant-design/icons";
+import Swal from "sweetalert2";
 
 const CustomHeader = ({ collapsed, setCollapsed }) => {
 	const { Header } = Layout;
@@ -20,7 +21,7 @@ const CustomHeader = ({ collapsed, setCollapsed }) => {
 			key: "0",
 			icon: <LogoutOutlined />,
 			title: "Logout",
-			onClick: logout,
+			onClick: handleLogout,
 		},
 	];
 
@@ -38,6 +39,25 @@ const CustomHeader = ({ collapsed, setCollapsed }) => {
 		</Menu>
 	);
 
+	function handleLogout() {
+		Swal.fire({
+			title: "Konfirmasi Logout",
+			text: "Anda Ingin Logout?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "Logout!",
+			cancelButtonText: "Batal",
+			reverseButtons: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			width: "400px",
+		}).then((result) => {
+			if (result.isConfirmed) {
+				logout();
+			}
+		});
+	}
+
 	return (
 		<Header style={{ padding: 0, background: colorBgContainer }}>
 			<Button
@@ -46,24 +66,24 @@ const CustomHeader = ({ collapsed, setCollapsed }) => {
 				onClick={() => setCollapsed(!collapsed)}
 				style={{ fontSize: "16px", width: 64, height: 64 }}
 			/>
-			<div style={{ float: "right", marginRight: 20 }}>
-				<span style={{ marginRight: 8 }}>
-					Welcome,{user?.data.name}
+			<div className="float-right mr-4 lg:mr-20">
+				<span className="hidden lg:inline-block mr-4">
+					Welcome, {user?.data.name}
 				</span>
 				<Dropdown overlay={items} trigger={["click"]}>
 					{user?.data.image && user.data.image !== "default.png" ? (
 						<Avatar
+							className="cursor-pointer"
 							style={{
 								backgroundColor: "#1890ff",
-								cursor: "pointer",
 							}}
 							src={user.data.image}
 						/>
 					) : (
 						<Avatar
+							className="cursor-pointer"
 							style={{
 								backgroundColor: "#1890ff",
-								cursor: "pointer",
 							}}
 							icon={<UserOutlined />}
 						/>

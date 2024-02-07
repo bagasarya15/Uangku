@@ -1,22 +1,10 @@
 import React from "react";
 import { Menu } from "antd";
-import AuthUser from "../layouts/utils/AuthUser";
+import { MainRouter } from "../layouts/route";
 import { Link, useLocation } from "react-router-dom";
-import { PieChartOutlined, DesktopOutlined } from "@ant-design/icons";
 
 const ListMenu = () => {
 	const location = useLocation();
-	const { token, user, logout } = AuthUser();
-
-	const items = [
-		{ key: "1", icon: <PieChartOutlined />, title: "Dashboard", link: "/" },
-		{
-			key: "2",
-			icon: <DesktopOutlined />,
-			title: "Category",
-			link: "/category",
-		},
-	];
 
 	return (
 		<Menu
@@ -24,10 +12,20 @@ const ListMenu = () => {
 			defaultSelectedKeys={["1"]}
 			mode="inline"
 			selectedKeys={[location.pathname]}
+			className="sidebar-menu"
 		>
-			{items.map((item) => (
-				<Menu.Item key={item.key} icon={item.icon}>
-					<Link to={item.link}>{item.title}</Link>
+			{MainRouter.map((item) => (
+				<Menu.Item
+					key={item.key}
+					icon={item.icon}
+					style={{
+						color:
+							location.pathname === item.path ? "white" : "gray",
+						fontWeight:
+							location.pathname === item.path ? "bold" : "",
+					}}
+				>
+					<Link to={item.path}>{item.title}</Link>
 				</Menu.Item>
 			))}
 		</Menu>
