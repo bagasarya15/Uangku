@@ -1,17 +1,17 @@
 const validate = {
-	username: { required: "username is required" },
-	name: { required: "name is required" },
+	username: { required: "username harus diisi" },
+	name: { required: "nama harus diisi" },
 	password: {
-		required: "password is required",
+		required: "password harus diisi",
 		minLength: {
 			value: 6,
-			message: "password must be at least 6 characters",
+			message: "password minimal 6 karakter",
 		},
 	},
 	confirmPassword: {
-		required: "confirm password is required",
+		required: "konfirmasi harus diisi",
 		validate: (value, { password }) =>
-			value === password || "passwords do not match",
+			value === password || "password tidak sama",
 	},
 };
 

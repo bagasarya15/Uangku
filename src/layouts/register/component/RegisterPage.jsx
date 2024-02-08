@@ -1,28 +1,22 @@
 import validate from "./Validate";
 import { useForm } from "react-hook-form";
+import { Alert, Button, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+import { LoadingOutlined } from "@ant-design/icons";
 import { apiRegister } from "../../../services/AuthApi";
 import ToggleComponent from "../../utils/ToggleComponent";
-import {
-	IconAlertCircle,
-	IconEye,
-	IconEyeOff,
-	IconX,
-} from "@tabler/icons-react";
-import {
-	Alert,
-	Box,
-	CircularProgress,
-	Collapse,
-	IconButton,
-} from "@mui/material";
+import { IconEye, IconEyeOff } from "@tabler/icons-react";
 
 const RegisterPage = () => {
 	const [err, setErr] = useState({});
+	const [isSuccess, setIsSuccess] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const [openSucces, setOpenSuccess] = React.useState(false);
-	const [openError, setOpenError] = React.useState(false);
+	const handleCloseAlert = () => {
+		setErr(null);
+		setLoading(false);
+		setIsSuccess(null);
+	};
 	const navigate = useNavigate();
 	const {
 		watch,
@@ -52,7 +46,7 @@ const RegisterPage = () => {
 			setLoading(true);
 			const data = await apiRegister(JSON.stringify(formData));
 			if (data.status === 201) {
-				setOpenSuccess(true);
+				setIsSuccess(true);
 				setTimeout(() => {
 					setLoading(false);
 				}, 2000);
@@ -62,14 +56,13 @@ const RegisterPage = () => {
 				response: { data },
 			} = error;
 			if (data.status === 422) {
-				setOpenError(true);
 				setErr({ message: data.message });
 			}
 		}
 	};
 
 	useEffect(() => {
-		if (openSucces) {
+		if (isSuccess) {
 			reset({
 				name: "",
 				username: "",
@@ -77,7 +70,7 @@ const RegisterPage = () => {
 				confirmPassword: "",
 			});
 		}
-	}, [openSucces]);
+	}, [isSuccess]);
 
 	return (
 		<div className="flex h-screen bg-gray-200">
@@ -89,82 +82,48 @@ const RegisterPage = () => {
 					onSubmit={handleSubmit(handleRegister)}
 					className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mx-5 lg:mx-0"
 				>
-					<div>
-						{err && (
-							<Box sx={{ width: "100%" }}>
-								<Collapse in={openError}>
-									<Alert
-										icon={
-											<IconAlertCircle fontSize="inherit" />
-										}
-										severity="warning"
-										action={
-											<IconButton
-												aria-label="close"
-												size="small"
-												onClick={() => {
-													setOpenError(false);
-													setLoading(false);
-												}}
-											>
-												<IconX fontSize="inherit" />
-											</IconButton>
-										}
-										sx={{ mb: 2 }}
+					<div className="mb-4">
+						{isSuccess && (
+							<Alert
+								message="Akun berhasil dibuat"
+								type="success"
+								showIcon
+								closable
+								onClose={handleCloseAlert}
+								action={
+									<Button
+										size="small"
+										type="text"
+										onClick={handleCloseAlert}
 									>
-										<p className="m-auto p-auto">
-											{err.message},
-											<span
-												className="underline"
-												style={{ cursor: "pointer" }}
-												onClick={() => {
-													setOpenError(false);
-													setLoading(false);
-												}}
-											>
-												{""} try again
-											</span>
-										</p>
-									</Alert>
-								</Collapse>
-							</Box>
-						)}
-
-						{openSucces && (
-							<Box sx={{ width: "100%" }}>
-								<Collapse in={openSucces}>
-									<Alert
-										severity="success"
-										action={
-											<IconButton
-												aria-label="close"
-												size="small"
-												onClick={() => {
-													setOpenSuccess(false);
-												}}
-											>
-												<IconX fontSize="inherit" />
-											</IconButton>
-										}
-										sx={{ mb: 2 }}
-									>
-										<p className="m-auto p-auto">
-											Create account success,
-											<span
-												className="underline"
-												style={{ cursor: "pointer" }}
-												onClick={() =>
-													navigate("/login")
-												}
-											>
-												login
-											</span>
-										</p>
-									</Alert>
-								</Collapse>
-							</Box>
+										Login
+									</Button>
+								}
+							/>
 						)}
 					</div>
+
+					<div className="mb-4">
+						{err && err.message && (
+							<Alert
+								message="Username sudah digunakan"
+								type="warning"
+								showIcon
+								closable
+								onClose={handleCloseAlert}
+								action={
+									<Button
+										size="small"
+										type="text"
+										onClick={handleCloseAlert}
+									>
+										Coba lagi
+									</Button>
+								}
+							/>
+						)}
+					</div>
+
 					<div className=" relative mb-4">
 						<label className="block text-gray-700 text-sm font-bold mb-2">
 							Username
@@ -187,7 +146,7 @@ const RegisterPage = () => {
 					</div>
 					<div className=" relative mb-4">
 						<label className="block text-gray-700 text-sm font-bold mb-2">
-							Name
+							Nama
 						</label>
 
 						<input
@@ -196,7 +155,7 @@ const RegisterPage = () => {
 							}`}
 							type="text"
 							autoComplete="off"
-							placeholder="Name"
+							placeholder="Nama"
 							{...register("name", validate.name)}
 						/>
 						{errors.name && (
@@ -246,7 +205,7 @@ const RegisterPage = () => {
 					</div>
 					<div className="mb-6 relative">
 						<label className="block text-gray-700 text-sm font-bold mb-2">
-							Confirm Password
+							Konfirmasi Password
 						</label>
 						<div
 							className={`relative shadow appearance-none  rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-[1px] ${
@@ -256,7 +215,7 @@ const RegisterPage = () => {
 							<input
 								className=" rounded w-full  text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 								type={showConfirmPassword ? "text" : "password"}
-								placeholder="Confirm Password"
+								placeholder="Konfirmasi Password"
 								{...register(
 									"confirmPassword",
 									validate.confirmPassword
@@ -293,9 +252,16 @@ const RegisterPage = () => {
 							disabled={loading}
 						>
 							{loading ? (
-								<CircularProgress
-									size={20}
-									style={{ color: "white" }}
+								<Spin
+									indicator={
+										<LoadingOutlined
+											style={{
+												fontSize: 24,
+												color: "white",
+											}}
+											spin
+										/>
+									}
 								/>
 							) : (
 								"Register"
@@ -305,9 +271,9 @@ const RegisterPage = () => {
 
 					<div>
 						<div className="mt-3 text-sm">
-							Already registered?{" "}
+							Sudah punya akun?{" "}
 							<span
-								className="underline"
+								className="underline text-blue-500"
 								style={{ cursor: "pointer" }}
 								onClick={() => navigate("/login")}
 							>

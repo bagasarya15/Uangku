@@ -1,24 +1,20 @@
-import AuthUser from "../../utils/AuthUser";
-import { IconX } from "@tabler/icons-react";
+import { Alert, Button, Spin } from "antd";
 import { useForm } from "react-hook-form";
+import AuthUser from "../../utils/AuthUser";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+import { LoadingOutlined } from "@ant-design/icons";
 import { apiLogin } from "../../../services/AuthApi";
+import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import ToggleComponent from "../../utils/ToggleComponent";
-import { IconAlertCircle, IconEye, IconEyeOff } from "@tabler/icons-react";
-import {
-	Alert,
-	Box,
-	CircularProgress,
-	Collapse,
-	IconButton,
-} from "@mui/material";
-
 const LoginPage = () => {
 	const [err, setErr] = useState({});
 	const [loading, setLoading] = useState(false);
-	const [openError, setOpenError] = React.useState(false);
 	const navigate = useNavigate();
+	const handleCloseAlert = () => {
+		setErr(null);
+		setLoading(false);
+	};
 
 	const {
 		watch,
@@ -38,8 +34,8 @@ const LoginPage = () => {
 	const { showPassword, togglePasswordVisibility } = ToggleComponent();
 
 	const validate = {
-		usernameOrEmail: { required: "username or email is required" },
-		password: { required: "password is required" },
+		usernameOrEmail: { required: "username / email harus diisi" },
+		password: { required: "password harus diisi" },
 	};
 
 	const handleLogin = async (params) => {
@@ -55,7 +51,6 @@ const LoginPage = () => {
 				response: { data },
 			} = error;
 			if (data.status === 400) {
-				setOpenError(true);
 				setErr({ message: data.message });
 			}
 		}
@@ -77,50 +72,29 @@ const LoginPage = () => {
 					onSubmit={handleSubmit(handleLogin)}
 					className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mx-5"
 				>
-					<div>
-						{err && (
-							<Box sx={{ width: "100%" }}>
-								<Collapse in={openError}>
-									<Alert
-										icon={
-											<IconAlertCircle fontSize="inherit" />
-										}
-										severity="warning"
-										action={
-											<IconButton
-												aria-label="close"
-												size="small"
-												onClick={() => {
-													setOpenError(false);
-													setLoading(false);
-												}}
-											>
-												<IconX fontSize="inherit" />
-											</IconButton>
-										}
-										sx={{ mb: 2 }}
+					<div className="mb-4">
+						{err && err.message && (
+							<Alert
+								message="Username atau password salah"
+								type="warning"
+								showIcon
+								closable
+								onClose={handleCloseAlert}
+								action={
+									<Button
+										size="small"
+										type="text"
+										onClick={handleCloseAlert}
 									>
-										<p className="m-auto p-auto">
-											{err.message},
-											<span
-												className="underline"
-												style={{ cursor: "pointer" }}
-												onClick={() => {
-													setOpenError(false);
-													setLoading(false);
-												}}
-											>
-												{""} try again
-											</span>
-										</p>
-									</Alert>
-								</Collapse>
-							</Box>
+										Coba lagi
+									</Button>
+								}
+							/>
 						)}
 					</div>
 					<div className=" relative mb-4">
 						<label className="block text-gray-700 text-sm font-bold mb-2">
-							Username or Email
+							Username / Email
 						</label>
 
 						<input
@@ -129,7 +103,7 @@ const LoginPage = () => {
 							}`}
 							type="text"
 							autoComplete="off"
-							placeholder="Username or Email"
+							placeholder="Username / Email"
 							{...register(
 								"usernameOrEmail",
 								validate.usernameOrEmail
@@ -187,9 +161,16 @@ const LoginPage = () => {
 							disabled={loading}
 						>
 							{loading ? (
-								<CircularProgress
-									size={20}
-									style={{ color: "white" }}
+								<Spin
+									indicator={
+										<LoadingOutlined
+											style={{
+												fontSize: 24,
+												color: "white",
+											}}
+											spin
+										/>
+									}
 								/>
 							) : (
 								"Login"
@@ -199,13 +180,13 @@ const LoginPage = () => {
 
 					<div>
 						<div className="mt-3 text-sm">
-							Not registered?{" "}
+							Belum punya akun?{" "}
 							<span
-								className="underline"
+								className="underline text-blue-500"
 								style={{ cursor: "pointer" }}
 								onClick={() => navigate("/register")}
 							>
-								Register now
+								Daftar sekarang
 							</span>
 						</div>
 					</div>
