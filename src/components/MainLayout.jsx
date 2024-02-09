@@ -9,7 +9,7 @@ import { Outlet, useLocation } from "react-router-dom";
 const MainLayout = () => {
 	const { Content } = Layout;
 	const location = useLocation();
-	const [collapsed, setCollapsed] = useState(false);
+	const [collapsed, setCollapsed] = useState(true);
 	const {
 		token: { colorBgContainer, borderRadiusLG },
 	} = theme.useToken();

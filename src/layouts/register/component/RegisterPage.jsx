@@ -94,7 +94,7 @@ const RegisterPage = () => {
 									<Button
 										size="small"
 										type="text"
-										onClick={handleCloseAlert}
+										onClick={() => navigate("/login")}
 									>
 										Login
 									</Button>

@@ -37,3 +37,37 @@ export async function apiLogin(params) {
 		throw error;
 	}
 }
+
+export async function editProfile(params) {
+	try {
+		const response = await axios({
+			method: "put",
+			data: params,
+			url: webserviceurlMain + "/users",
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+		return response.data;
+	} catch (error) {
+		console.error("API Edit Profile Error:", error);
+		throw error;
+	}
+}
+
+export async function deleteImage(params) {
+	try {
+		const response = await axios({
+			method: "put",
+			data: params,
+			url: webserviceurlMain + "/users/delete-image",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		return response.data;
+	} catch (error) {
+		console.error("API Delete Image Error:", error);
+		throw error;
+	}
+}
