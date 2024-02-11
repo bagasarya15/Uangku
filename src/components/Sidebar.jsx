@@ -5,12 +5,16 @@ const { Sider } = Layout;
 const Sidebar = ({ collapsed }) => {
 	return (
 		<Sider
+			theme="light"
 			trigger={null}
 			collapsible
 			collapsed={collapsed}
 			collapsedWidth={0}
 			width={200}
-			style={{ display: collapsed ? "none" : "block" }}
+			style={{
+				display: collapsed ? "none" : "block",
+				// backgroundColor: "#3b82f6",
+			}}
 		>
 			<div className="bg-white pt-[10px]">
 				<div className="pb-[19px]">

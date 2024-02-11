@@ -5,8 +5,11 @@ const CustomFooter = () => {
 	const { Footer } = Layout;
 	return (
 		<Footer style={{ textAlign: "center" }}>
-			<p className="text-blue-500 font-light text-[12px]">
-				Uangku ©{new Date().getFullYear()} By Bagas Arya
+			<p
+				className="text-[12px]"
+				style={{ color: "#25396f", fontWeight: "500" }}
+			>
+				Uangku ©{new Date().getFullYear()} By Bagas Arya P
 			</p>
 		</Footer>
 	);

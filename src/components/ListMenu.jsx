@@ -11,10 +11,11 @@ const ListMenu = () => {
 
 	return (
 		<Menu
-			theme="dark"
+			theme="light"
 			defaultSelectedKeys={["1"]}
 			mode="inline"
 			selectedKeys={[location.pathname]}
+			style={{ backgroundColor: "transparent" }}
 		>
 			{MainRouter.map((item) =>
 				item.roles && !userRoles.includes(item.roles) ? null : (
@@ -25,9 +26,15 @@ const ListMenu = () => {
 							color:
 								location.pathname === item.path
 									? "white"
-									: "gray",
+									: "#25396f",
 							fontWeight:
-								location.pathname === item.path ? "bold" : "",
+								location.pathname === item.path
+									? "bold"
+									: "500",
+							backgroundColor:
+								location.pathname === item.path
+									? "#435ebe"
+									: "transparent",
 						}}
 					>
 						<Link to={item.path}>{item.title}</Link>

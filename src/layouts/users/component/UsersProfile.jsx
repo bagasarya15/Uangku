@@ -1,5 +1,4 @@
 import Swal from "sweetalert2";
-import { useForm } from "react-hook-form";
 import React, { useState, useEffect } from "react";
 import DefaultUsersImage from "../../../assets/default.jpg";
 import { deleteImage, editProfile } from "../../../services/AuthApi";
@@ -182,7 +181,7 @@ const EditProfileModal = ({
 				</Form.Item>
 				<Form.Item
 					name="name"
-					label="Name"
+					label="Nama"
 					rules={[{ required: true, message: "Nama wajib diisi" }]}
 				>
 					<Input />
@@ -218,15 +217,16 @@ const EditProfileModal = ({
 							onChange={handleFileChange}
 							style={{ display: "inline-block" }}
 						/>
-
-						<Button
-							onClick={confirmDelete}
-							accept="image/png, image/jpeg, image/jpg"
-							type="file"
-							className="file:py-2 file:px-4 file:rounded-full file:text-sm file:font-semibold file:bg-transparent file:text-red-500 border border-red-500 hover:text-white hover:bg-red-500 hover:border-red-500 mt-3"
-						>
-							Hapus Foto
-						</Button>
+						{defaultImage !== "default.jpg" && (
+							<Button
+								onClick={confirmDelete}
+								accept="image/png, image/jpeg, image/jpg"
+								type="file"
+								className="file:py-2 file:px-4 file:rounded-full file:text-sm file:font-semibold file:bg-transparent file:text-red-500 border border-red-500 hover:text-white hover:bg-red-500 hover:border-red-500 mt-3"
+							>
+								Hapus Foto
+							</Button>
+						)}
 					</div>
 				</Form.Item>
 			</Form>

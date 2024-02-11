@@ -12,7 +12,7 @@ const BreadCrumb = ({ location }) => {
 		<Breadcrumb.Item>
 			<Link to="/">
 				{" "}
-				<p className="text-blue-500">Menu</p>
+				<p style={{ color: "#25396f" }}>Menu</p>
 			</Link>{" "}
 			/ <Link to={currentRoute.path}>{currentRoute.title}</Link>
 		</Breadcrumb.Item>

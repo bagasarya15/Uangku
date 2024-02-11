@@ -91,8 +91,11 @@ const CustomHeader = ({ collapsed, setCollapsed }) => {
 				style={{ fontSize: "16px", width: 64, height: 64 }}
 			/>
 			<div className="float-right mr-4 lg:mr-20">
-				<span className="hidden lg:inline-block mr-4">
-					Welcome, {userData?.name}
+				<span
+					className="hidden lg:inline-block mr-4"
+					style={{ color: "#25396f", fontWeight: "500" }}
+				>
+					{userData?.name}
 				</span>
 				<Dropdown
 					overlay={items}

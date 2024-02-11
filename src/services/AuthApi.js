@@ -1,6 +1,4 @@
 import axios from "axios";
-// export var webserviceurlMain = "https://api-simka.setkab.go.id";
-// export const webservicedir = `${webserviceurlMain}/storage/files`;
 
 const webserviceurlMain = import.meta.env.VITE_BASE_URL;
 
