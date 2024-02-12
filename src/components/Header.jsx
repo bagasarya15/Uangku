@@ -16,7 +16,7 @@ const { Header } = Layout;
 
 const CustomHeader = ({ collapsed, setCollapsed }) => {
 	const navigate = useNavigate();
-	const { token, user, logout } = AuthUser();
+	const { token, user, logout, setIsLogout, isLogout } = AuthUser();
 	const [modalVisible, setModalVisible] = useState(false);
 	const [userData, setUserData] = useState(user?.data);
 

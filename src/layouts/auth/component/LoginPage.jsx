@@ -1,20 +1,27 @@
-import { Alert, Button, Spin } from "antd";
 import { useForm } from "react-hook-form";
-import AuthUser from "../../utils/AuthUser";
-import { useNavigate } from "react-router-dom";
+import { Alert, Button, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import { apiLogin } from "../../../services/AuthApi";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import ToggleComponent from "../../utils/ToggleComponent";
+import { useLocation, useNavigate } from "react-router-dom";
+
 const LoginPage = () => {
 	const [err, setErr] = useState({});
 	const [loading, setLoading] = useState(false);
+	const [alertLogout, setAlertLogout] = useState(false);
 	const navigate = useNavigate();
+
+	const location = useLocation();
+	const state = location.state;
+
 	const handleCloseAlert = () => {
 		setErr(null);
 		setLoading(false);
 	};
+
+	const { showPassword, togglePasswordVisibility } = ToggleComponent();
 
 	const {
 		watch,
@@ -29,9 +36,6 @@ const LoginPage = () => {
 			password: "",
 		},
 	});
-
-	const { token, user, logout } = AuthUser();
-	const { showPassword, togglePasswordVisibility } = ToggleComponent();
 
 	const validate = {
 		usernameOrEmail: { required: "username / email harus diisi" },
@@ -57,10 +61,13 @@ const LoginPage = () => {
 	};
 
 	useEffect(() => {
-		if (token) {
-			navigate("/");
-		}
-	}, [token]);
+		setTimeout(() => {
+			navigate({
+				...location,
+				state: null,
+			});
+		}, [2000]);
+	}, []);
 
 	return (
 		<div className="flex h-screen bg-gray-200">
@@ -73,6 +80,17 @@ const LoginPage = () => {
 					className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mx-5"
 				>
 					<div className="mb-4">
+						{state && state.isLogout && (
+							<Alert message="Berhasil logout" type="success" />
+						)}
+
+						{state && state.isExpired && (
+							<Alert
+								message="Sesi login berakhir, silahkan login kembali"
+								type="success"
+							/>
+						)}
+
 						{err && err.message && (
 							<Alert
 								message="Username atau password salah"

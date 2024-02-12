@@ -19,12 +19,12 @@ const EditProfileModal = ({
 
 	useEffect(() => {
 		form.setFieldsValue({
-			username: userData.username || "",
-			email: userData.email || "",
-			name: userData.name || "",
-			image: userData.image || null,
+			username: userData?.username || "",
+			email: userData?.email || "",
+			name: userData?.name || "",
+			image: userData?.image || null,
 		});
-		setDefaultImage(userData.image || null);
+		setDefaultImage(userData?.image || null);
 	}, [userData]);
 
 	const handleFileChange = (event) => {
@@ -103,10 +103,10 @@ const EditProfileModal = ({
 
 	const handleCancel = () => {
 		form.setFieldsValue({
-			username: userData.username || "",
-			email: userData.email || "",
-			name: userData.name || "",
-			image: userData.image || null,
+			username: userData?.username || "",
+			email: userData?.email || "",
+			name: userData?.name || "",
+			image: userData?.image || null,
 		});
 		onCancel();
 		setErr(null);
@@ -194,7 +194,7 @@ const EditProfileModal = ({
 								src={previewImage}
 								alt="Profile Picture"
 							/>
-						) : userData.image === "default.jpg" ? (
+						) : userData?.image === "default.jpg" ? (
 							<Image
 								width={200}
 								src={DefaultUsersImage}

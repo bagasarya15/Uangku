@@ -12,6 +12,7 @@ import {
 	IconDashboard,
 	IconUserCog,
 } from "@tabler/icons-react";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 export const AuthRouter = [
 	{
@@ -32,7 +33,7 @@ export const MainRouter = [
 		path: "/",
 		title: "Dashboard",
 		icon: <IconDashboard />,
-		element: <DashboardIndex />,
+		element: <ProtectedRoute element={DashboardIndex} />,
 	},
 	{
 		key: "2",
