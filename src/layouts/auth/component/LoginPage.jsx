@@ -10,11 +10,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 const LoginPage = () => {
 	const [err, setErr] = useState({});
 	const [loading, setLoading] = useState(false);
-	const [alertLogout, setAlertLogout] = useState(false);
-	const navigate = useNavigate();
-
 	const location = useLocation();
 	const state = location.state;
+	const navigate = useNavigate();
 
 	const handleCloseAlert = () => {
 		setErr(null);
@@ -66,7 +64,7 @@ const LoginPage = () => {
 				...location,
 				state: null,
 			});
-		}, [2000]);
+		}, [4000]);
 	}, []);
 
 	return (
@@ -81,13 +79,18 @@ const LoginPage = () => {
 				>
 					<div className="mb-4">
 						{state && state.isLogout && (
-							<Alert message="Berhasil logout" type="success" />
+							<Alert
+								message="Berhasil logout"
+								type="success"
+								showIcon
+							/>
 						)}
 
 						{state && state.isExpired && (
 							<Alert
 								message="Sesi login berakhir, silahkan login kembali"
-								type="success"
+								type="info"
+								showIcon
 							/>
 						)}
 

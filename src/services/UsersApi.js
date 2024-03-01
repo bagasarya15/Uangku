@@ -11,7 +11,10 @@ export async function apiGetUsers(params) {
 			url += `/${search}`;
 		}
 
-		const response = await axios.get(url, {
+		const response = await axios({
+			method: "get",
+			url: url,
+			params: params,
 			headers: {
 				"Content-Type": "application/json",
 			},

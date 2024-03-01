@@ -5,6 +5,7 @@ import CategoryIndex from "./category";
 import DashboardIndex from "./dashboard";
 import LoginPage from "./auth/component/LoginPage";
 import RegisterPage from "./register/component/RegisterPage";
+import { Navigate } from "react-router-dom";
 import {
 	IconCategory,
 	IconCoin,
@@ -12,7 +13,15 @@ import {
 	IconDashboard,
 	IconUserCog,
 } from "@tabler/icons-react";
-import ProtectedRoute from "./utils/ProtectedRoute";
+import NotFoundPage from "./utils/404";
+
+const isAuthenticated = () => {
+	return localStorage.getItem("token") !== null;
+};
+
+const ProtectedRoute = ({ element }) => {
+	return isAuthenticated() ? element : <Navigate to="/login" replace />;
+};
 
 export const AuthRouter = [
 	{
@@ -33,35 +42,41 @@ export const MainRouter = [
 		path: "/",
 		title: "Dashboard",
 		icon: <IconDashboard />,
-		element: <ProtectedRoute element={DashboardIndex} />,
+		element: <ProtectedRoute element={<DashboardIndex />} />,
 	},
 	{
 		key: "2",
 		path: "/category",
 		title: "Kategori",
 		icon: <IconCategory />,
-		element: <CategoryIndex />,
+		element: <ProtectedRoute element={<CategoryIndex />} />,
 	},
 	{
 		key: "3",
 		path: "/expense",
 		title: "Pengeluaran",
 		icon: <IconCoinOff />,
-		element: <ExpenseIndex />,
+		element: <ProtectedRoute element={<ExpenseIndex />} />,
 	},
 	{
 		key: "4",
 		path: "/income",
 		title: "Pemasukan",
 		icon: <IconCoin />,
-		element: <IncomeIndex />,
+		element: <ProtectedRoute element={<IncomeIndex />} />,
 	},
 	{
 		key: "5",
 		path: "/user-management",
 		title: "User Management",
 		icon: <IconUserCog />,
-		element: <UsersIndex />,
+		element: <ProtectedRoute element={<UsersIndex />} />,
 		roles: ["admin"],
+	},
+
+	{
+		key: "404",
+		path: "*",
+		element: <NotFoundPage />,
 	},
 ];

@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 const AuthUser = () => {
 	const navigate = useNavigate();
 	const token = localStorage.getItem("token");
-	const [isLogout, setIsLogout] = useState(false);
-	const [isExpired, setIsExpired] = useState(false);
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
@@ -21,7 +19,6 @@ const AuthUser = () => {
 			decodedToken.exp < Date.now() / 1000
 		) {
 			localStorage.removeItem("token");
-			setIsExpired(true);
 			navigate("/login", { state: { isExpired: true } });
 		}
 	}, []);

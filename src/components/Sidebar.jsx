@@ -19,7 +19,10 @@ const Sidebar = ({ collapsed }) => {
 			<div className="bg-white pt-[10px]">
 				<div className="pb-[19px]">
 					<div className="mt-3 text-center">
-						<h1 className="font-bold">UANGKU</h1>
+						<h1 class="font-bold">
+							<span class="text-blue-700">UANG</span>
+							<span class="text-gray-950">KU</span>
+						</h1>
 					</div>
 				</div>
 			</div>
