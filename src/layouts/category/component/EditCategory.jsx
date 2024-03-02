@@ -1,9 +1,15 @@
-import React, { useState } from "react";
 import { Modal, Form, Input, Select, Button } from "antd";
+import { apiUpdateCategory } from "../../../services/CategoryApi";
 
 const { Option } = Select;
 
-const EditCategory = ({ visible, onCancel, initialValues }) => {
+const EditCategory = ({
+	visible,
+	onCancel,
+	initialValues,
+	fetchData,
+	handleAlert,
+}) => {
 	const [form] = Form.useForm();
 
 	const onOk = () => {
@@ -18,7 +24,28 @@ const EditCategory = ({ visible, onCancel, initialValues }) => {
 	};
 
 	const handleOk = async (values) => {
-		console.log(values, "handle edit");
+		try {
+			const data = await apiUpdateCategory(values);
+			if (data.status === 200) {
+				console.log("Received values:", values);
+				onCancel();
+				fetchData();
+				handleAlert(
+					`Kategori ${values.category_name} berhasil diperbarui`
+				);
+			}
+		} catch (error) {
+			if (error.data && error.data.status === 422) {
+				setErr({ message: error.response.message });
+			} else {
+				console.log("Error:", error);
+			}
+		}
+	};
+
+	const handleCancel = () => {
+		form.resetFields();
+		onCancel();
 	};
 
 	return (
@@ -28,7 +55,7 @@ const EditCategory = ({ visible, onCancel, initialValues }) => {
 			onOk={handleOk}
 			onCancel={onCancel}
 			footer={[
-				<Button key="cancel" onClick={onCancel}>
+				<Button key="cancel" onClick={handleCancel}>
 					Batal
 				</Button>,
 				<Button key="tambah" onClick={onOk}>

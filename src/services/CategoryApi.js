@@ -40,6 +40,25 @@ export async function apiCreateCategory(values) {
 	}
 }
 
+export async function apiUpdateCategory(values) {
+	try {
+		let url = `${webserviceurlMain}/category/update`;
+
+		const response = await axios({
+			method: "put",
+			url: url,
+			data: values,
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		return response.data;
+	} catch (error) {
+		console.error("API Update Category Error:", error);
+		throw error;
+	}
+}
+
 export async function apiDeleteCategory(values) {
 	try {
 		console.log(values, "string");

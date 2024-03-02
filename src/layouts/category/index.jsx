@@ -16,10 +16,6 @@ const CategoryIndex = () => {
 		setIsModalVisible(false);
 	};
 
-	const handleAlert = (valMessage) => {
-		message.success(valMessage);
-	};
-
 	return (
 		<CategoryData
 			render={(props) => (
@@ -89,7 +85,7 @@ const CategoryIndex = () => {
 						onCancel={handleCancel}
 						user={user}
 						fetchData={props.fetchData}
-						handleAlert={handleAlert}
+						handleAlert={props.handleAlert}
 					/>
 				</div>
 			)}

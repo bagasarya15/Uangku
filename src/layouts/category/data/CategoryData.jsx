@@ -22,6 +22,10 @@ const CategoryData = ({ render }) => {
 	});
 	const [editModalVisible, setEditModalVisible] = useState(false);
 
+	const handleAlert = (valMessage) => {
+		message.success(valMessage);
+	};
+
 	const fetchData = async () => {
 		setLoading(true);
 		try {
@@ -156,6 +160,7 @@ const CategoryData = ({ render }) => {
 					user={user}
 					fetchData={fetchData}
 					initialValues={selectedRow}
+					handleAlert={handleAlert}
 				/>
 			)}
 			{render({
@@ -165,10 +170,11 @@ const CategoryData = ({ render }) => {
 				loading: loading,
 				pagination: pagination,
 				searchValue: searchValue,
-				handleSearchChange: handleSearchChange,
-				handlePaginationChange: handlePaginationChange,
 				selectedRow: selectedRow,
 				fetchData: fetchData,
+				handleAlert: handleAlert,
+				handleSearchChange: handleSearchChange,
+				handlePaginationChange: handlePaginationChange,
 			})}
 		</>
 	);

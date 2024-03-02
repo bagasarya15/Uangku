@@ -73,6 +73,7 @@ const AddCategory = ({ visible, onCancel, user, fetchData, handleAlert }) => {
 							message: "Nama Kategori wajib diisi",
 						},
 					]}
+					autoComplete="off"
 				>
 					<Input />
 				</Form.Item>
