@@ -1,14 +1,15 @@
+import dayjs from "dayjs";
 import Swal from "sweetalert2";
-import { Badge, Button, message } from "antd";
+import id from "dayjs/locale/id";
+import { Button, message } from "antd";
 import AuthUser from "../../utils/AuthUser";
+import EditExpense from "../component/EditExpense";
 import React, { useEffect, useState } from "react";
-import {
-	apiDeleteCategory,
-	apiGetCategory,
-} from "../../../services/CategoryApi";
-import EditCategory from "../component/EditCategory";
+import { apiDeleteExpense, apiGetExpense } from "../../../services/ExpenseApi";
 
-const CategoryData = ({ render }) => {
+const ExpenseData = ({ render }) => {
+	dayjs.locale(id);
+
 	const { user } = AuthUser();
 	const [err, setErr] = useState(null);
 	const [data, setData] = useState([]);
@@ -26,16 +27,16 @@ const CategoryData = ({ render }) => {
 		message.success(valMessage);
 	};
 
-	const fetchData = async () => {
+	const fetchData = async (search) => {
 		setLoading(true);
 		try {
 			let params = {
 				page: pagination.current,
 				limit: pagination.pageSize,
-				search: searchValue,
+				search: search || "",
 				user_id: user?.data?.id,
 			};
-			const response = await apiGetCategory(params);
+			const response = await apiGetExpense(params);
 			if (response.status === 200) {
 				setData(response.records);
 				setPagination((prev) => ({
@@ -50,7 +51,7 @@ const CategoryData = ({ render }) => {
 	};
 
 	useEffect(() => {
-		fetchData(pagination);
+		fetchData();
 	}, [pagination.current, pagination.pageSize, searchValue]);
 
 	const handlePaginationChange = (page, pageSize) => {
@@ -73,7 +74,7 @@ const CategoryData = ({ render }) => {
 	const handleDelete = (record) => {
 		Swal.fire({
 			title: "Konfirmasi Hapus",
-			text: `Anda Ingin Hapus Kategori ${record?.category_name}?`,
+			text: `Anda Ingin Hapus ${record?.name}?`,
 			icon: "warning",
 			showCancelButton: true,
 			confirmButtonText: "Hapus!",
@@ -84,18 +85,16 @@ const CategoryData = ({ render }) => {
 			width: "400px",
 		}).then((result) => {
 			if (result.isConfirmed) {
-				deleteCategory(record);
+				deleteExpense(record);
 			}
 		});
 	};
 
-	const deleteCategory = async (record) => {
+	const deleteExpense = async (record) => {
 		try {
-			const data = await apiDeleteCategory(record.id);
+			const data = await apiDeleteExpense(record.id);
 			if (data.status === 200) {
-				message.success(
-					`Kategori ${record.category_name} berhasil dihapus`
-				);
+				message.success(`Pengeluaran ${record.name} berhasil dihapus`);
 				fetchData();
 			}
 		} catch (error) {
@@ -105,26 +104,32 @@ const CategoryData = ({ render }) => {
 
 	const columns = [
 		{
-			title: "Kategori",
-			dataIndex: "category_name",
-			key: "category_name",
-			render: (category_name) => category_name,
+			title: "Keterangan",
+			dataIndex: "name",
+			key: "name",
+			render: (name) => name,
+			width: 200,
 		},
 		{
-			title: "Tipe Kategori",
-			dataIndex: "category_type",
-			key: "category_type",
-			render: (category_type) => {
-				let color = "";
-				let displayText = category_type;
-				if (category_type === "Expense") {
-					color = "#bf3952";
-					displayText = "Pengeluaran";
-				} else if (category_type === "Income") {
-					color = "#3b82f6";
-					displayText = "Pemasukan";
-				}
-				return <Badge text={displayText} color={color} />;
+			title: "Jenis Pengeluaran",
+			dataIndex: "category",
+			key: "category",
+			render: (category) => category?.category_name,
+		},
+		{
+			title: "Nominal",
+			dataIndex: "nominal",
+			key: "nominal",
+			render: (nominal) => `Rp. ${Number(nominal).toLocaleString()}`,
+		},
+		{
+			title: "Tanggal",
+			dataIndex: "expense_datetime",
+			key: "expense_datetime",
+			render: (expense_datetime) => {
+				return dayjs(expense_datetime).format(
+					"dddd, DD MMMM YYYY HH:mm"
+				);
 			},
 		},
 		{
@@ -154,7 +159,7 @@ const CategoryData = ({ render }) => {
 	return (
 		<>
 			{editModalVisible && (
-				<EditCategory
+				<EditExpense
 					visible={editModalVisible}
 					onCancel={() => setEditModalVisible(false)}
 					user={user}
@@ -180,4 +185,4 @@ const CategoryData = ({ render }) => {
 	);
 };
 
-export default CategoryData;
+export default ExpenseData;

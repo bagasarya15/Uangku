@@ -28,7 +28,7 @@ const UserData = ({ render }) => {
 			};
 			const response = await apiGetUsers(params);
 			if (response.status === 200) {
-				setData(response.result);
+				setData(response.records);
 				setPagination((prev) => ({
 					...prev,
 					total: response.meta.total,

@@ -2,23 +2,9 @@ import axios from "axios";
 
 const webserviceurlMain = import.meta.env.VITE_BASE_URL;
 
-export async function getSelectCategory(categoryType, userId) {
+export async function apiGetExpense(values) {
 	try {
-		let url = `${webserviceurlMain}/category/select-option/${categoryType}/${userId}`;
-		const response = await axios.get(url, {
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
-		return response.data;
-	} catch (error) {
-		console.error("API Get Select Category Error:", error);
-		throw error;
-	}
-}
-export async function apiGetCategory(values) {
-	try {
-		let url = `${webserviceurlMain}/category/get-category`;
+		let url = `${webserviceurlMain}/expense/get-expense`;
 
 		const response = await axios({
 			method: "post",
@@ -30,14 +16,14 @@ export async function apiGetCategory(values) {
 		});
 		return response.data;
 	} catch (error) {
-		console.error("API Get Category Error:", error);
+		console.error("API Get Expense Error:", error);
 		throw error;
 	}
 }
 
-export async function apiCreateCategory(values) {
+export async function apiCreateExpense(values) {
 	try {
-		let url = `${webserviceurlMain}/category`;
+		let url = `${webserviceurlMain}/expense`;
 
 		const response = await axios({
 			method: "post",
@@ -49,14 +35,14 @@ export async function apiCreateCategory(values) {
 		});
 		return response.data;
 	} catch (error) {
-		console.error("API Create Category Error:", error);
+		console.error("API Create Expense Error:", error);
 		throw error;
 	}
 }
 
-export async function apiUpdateCategory(values) {
+export async function apiUpdateExpense(values) {
 	try {
-		let url = `${webserviceurlMain}/category/update`;
+		let url = `${webserviceurlMain}/expense`;
 
 		const response = await axios({
 			method: "put",
@@ -68,15 +54,14 @@ export async function apiUpdateCategory(values) {
 		});
 		return response.data;
 	} catch (error) {
-		console.error("API Update Category Error:", error);
+		console.error("API Update Expense Error:", error);
 		throw error;
 	}
 }
 
-export async function apiDeleteCategory(values) {
+export async function apiDeleteExpense(values) {
 	try {
-		console.log(values, "string");
-		let url = `${webserviceurlMain}/category/${values}`;
+		let url = `${webserviceurlMain}/expense/${values}`;
 		const response = await axios({
 			method: "delete",
 			url: url,

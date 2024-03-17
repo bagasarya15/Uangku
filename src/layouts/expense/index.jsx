@@ -1,11 +1,106 @@
-import React from "react";
-import ExpensePage from "./component/ExpensePage";
+import React, { useState } from "react";
+import AuthUser from "../utils/AuthUser";
+import { Button, Input, Table, message } from "antd";
+import ExpenseData from "./data/ExpenseData";
+import AddExpense from "./component/AddExpense";
 
 const ExpenseIndex = () => {
+	const { user } = AuthUser();
+	const [isModalVisible, setIsModalVisible] = useState(false);
+
+	const showModal = () => {
+		setIsModalVisible(true);
+	};
+
+	const handleCancel = () => {
+		setIsModalVisible(false);
+	};
+
 	return (
-		<div>
-			<ExpensePage />
-		</div>
+		<ExpenseData
+			render={(props) => (
+				<div>
+					<div>
+						<Button
+							style={{ marginBottom: "7px" }}
+							onClick={showModal}
+						>
+							Tambah
+						</Button>
+					</div>
+					<div
+						style={{
+							display: "flex",
+							alignItems: "flex-end",
+							justifyContent: "flex-end",
+						}}
+					>
+						<Input
+							placeholder="Search"
+							value={props.searchValue}
+							onChange={props.handleSearchChange}
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
+									e.preventDefault();
+									props.fetchData(props.searchValue);
+								}
+							}}
+							style={{
+								width: "auto",
+								marginRight: "8px",
+								marginBottom: "10px",
+								maxWidth: "200px",
+							}}
+						/>
+						<Input
+							type="button"
+							value="Search"
+							onClick={() => props.fetchData(props.searchValue)}
+							style={{
+								width: "auto",
+								marginRight: "8px",
+								marginBottom: "10px",
+							}}
+						/>
+					</div>
+
+					<Table
+						columns={props.columns.map((column) => ({
+							...column,
+							align: "center",
+							render: (text, record) => (
+								<div style={{ textAlign: "center" }}>
+									{column.render
+										? column.render(text, record)
+										: text}
+								</div>
+							),
+						}))}
+						dataSource={props.data}
+						loading={props.loading}
+						pagination={{
+							...props.pagination,
+							onChange: props.handlePaginationChange,
+							showSizeChanger: true,
+							showTotal: (total, range) =>
+								`${range[0]}-${range[1]} dari ${total} data`,
+						}}
+						locale={{
+							emptyText: props.err ? props.err : "No data",
+						}}
+						scroll={{ x: "100%" }}
+					/>
+
+					<AddExpense
+						visible={isModalVisible}
+						onCancel={handleCancel}
+						user={user}
+						fetchData={props.fetchData}
+						handleAlert={props.handleAlert}
+					/>
+				</div>
+			)}
+		/>
 	);
 };
 
