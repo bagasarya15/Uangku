@@ -68,7 +68,7 @@ const LoginPage = () => {
 	}, []);
 
 	return (
-		<div className="flex flex-col h-screen bg-gray-200">
+		<div className="flex h-screen bg-gray-200">
 			<div className="m-auto w-[500px]">
 				<div className="flex items-center justify-center">
 					<h1 className="text-2xl font-bold mb-3">
@@ -216,10 +216,6 @@ const LoginPage = () => {
 					</div>
 				</form>
 			</div>
-
-			<footer className="text-center text-gray-500 text-sm py-4">
-				© 2024 UANGKU. All rights reserved.
-			</footer>
 		</div>
 	);
 };

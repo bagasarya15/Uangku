@@ -19,9 +19,7 @@ const RegisterPage = () => {
 	};
 	const navigate = useNavigate();
 	const {
-		watch,
 		register,
-		setError,
 		handleSubmit,
 		reset,
 		formState: { errors },
@@ -73,10 +71,10 @@ const RegisterPage = () => {
 	}, [isSuccess]);
 
 	return (
-		<div className="flex flex-col h-screen bg-gray-200">
+		<div className="flex h-screen bg-gray-200">
 			<div className="w-[500px] m-auto">
 				<div className="flex items-center justify-center">
-					<h1 className="text-2xl font-bold mb-3">REGISTRASI AKUN</h1>
+					<h1 className="text-2xl font-bold mb-3">REGISRASI AKUN</h1>
 				</div>
 				<form
 					onSubmit={handleSubmit(handleRegister)}
@@ -283,9 +281,6 @@ const RegisterPage = () => {
 					</div>
 				</form>
 			</div>
-			<footer className="text-center text-gray-500 text-sm py-4">
-				© 2024 UANGKU. All rights reserved.
-			</footer>
 		</div>
 	);
 };
