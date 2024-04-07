@@ -27,6 +27,7 @@ const UserIndex = () => {
 							style={{
 								width: "auto",
 								marginRight: "8px",
+								// marginBottom: "10px",
 								maxWidth: "200px",
 							}}
 						/>
@@ -53,6 +54,7 @@ const UserIndex = () => {
 							emptyText: props.err ? props.err : "No data",
 						}}
 						scroll={{ x: "100%" }}
+						style={{ marginTop: "10px" }}
 					/>
 				</div>
 			)}

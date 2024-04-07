@@ -68,10 +68,13 @@ const LoginPage = () => {
 	}, []);
 
 	return (
-		<div className="flex h-screen bg-gray-200">
+		<div className="flex flex-col h-screen bg-gray-200">
 			<div className="m-auto w-[500px]">
 				<div className="flex items-center justify-center">
-					<h1 className="text-2xl font-bold mb-3">LOGIN</h1>
+					<h1 className="text-2xl font-bold mb-3">
+						<span className="text-blue-700">UANG</span>
+						<span className="text-gray-950">KU</span>
+					</h1>
 				</div>
 				<form
 					onSubmit={handleSubmit(handleLogin)}
@@ -213,6 +216,10 @@ const LoginPage = () => {
 					</div>
 				</form>
 			</div>
+
+			<footer className="text-center text-gray-500 text-sm py-4">
+				© 2024 UANGKU. All rights reserved.
+			</footer>
 		</div>
 	);
 };

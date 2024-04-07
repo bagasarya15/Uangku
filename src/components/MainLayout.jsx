@@ -5,7 +5,6 @@ import CustomFooter from "./Footer";
 import { Layout, theme } from "antd";
 import BreadCrumb from "./BreadCrumb";
 import { Outlet, useLocation } from "react-router-dom";
-
 const MainLayout = () => {
 	const { Content } = Layout;
 	const location = useLocation();

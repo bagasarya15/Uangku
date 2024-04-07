@@ -88,7 +88,7 @@ const CustomHeader = ({ collapsed, setCollapsed }) => {
 				type="text"
 				icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
 				onClick={() => setCollapsed(!collapsed)}
-				style={{ fontSize: "16px", width: 64, height: 64 }}
+				style={{ fontSize: "16px", width: 64, height: 64, zIndex: 1 }}
 			/>
 			<div className="float-right mr-4 lg:mr-20">
 				<span
