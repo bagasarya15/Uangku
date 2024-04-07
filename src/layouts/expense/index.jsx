@@ -20,14 +20,6 @@ const ExpenseIndex = () => {
 		<ExpenseData
 			render={(props) => (
 				<div>
-					<div>
-						<Button
-							style={{ marginBottom: "7px" }}
-							onClick={showModal}
-						>
-							Tambah
-						</Button>
-					</div>
 					<div
 						style={{
 							display: "flex",
@@ -62,6 +54,13 @@ const ExpenseIndex = () => {
 								marginBottom: "10px",
 							}}
 						/>
+
+						<Button
+							style={{ width: "auto", marginBottom: "10px" }}
+							onClick={showModal}
+						>
+							Tambah
+						</Button>
 					</div>
 
 					<Table

@@ -1,18 +1,16 @@
 import AuthUser from "../utils/AuthUser";
 import React, { useState, useEffect } from "react";
-import { DatePicker, Button, Row, Col, Card } from "antd";
 import { apiDashboard } from "../../services/DashboardApi";
-
-const { RangePicker } = DatePicker;
+import { IconArrowDown, IconTrendingUp } from "@tabler/icons-react";
 
 const DashboardIndex = () => {
-	const [totalTodayExpense, setTotalTodayExpense] = useState(0);
-	const [totalMonthExpense, setTotalMonthExpense] = useState(0);
-	const [totalFilteredExpense, setTotalFilteredExpense] = useState(0);
 	const { user } = AuthUser();
 	const [data, setData] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [err, setErr] = useState(null);
 
 	const fetchData = async () => {
+		setLoading(true);
 		try {
 			let params = {
 				user_id: user?.data?.id,
@@ -27,74 +25,74 @@ const DashboardIndex = () => {
 		setLoading(false);
 	};
 
-	console.log(data, "data");
-
 	useEffect(() => {
 		fetchData();
-		fetchTotalExpenses();
 	}, []);
 
-	const fetchTotalExpenses = () => {
-		// Call API to fetch total expenses for today, this month, and filtered
-		// Set the fetched data to state variables: totalTodayExpense, totalMonthExpense, totalFilteredExpense
-		// Example API call:
-		// fetch("/api/total-expenses")
-		//   .then((response) => response.json())
-		//   .then((data) => {
-		//     setTotalTodayExpense(data.totalTodayExpense);
-		//     setTotalMonthExpense(data.totalMonthExpense);
-		//     setTotalFilteredExpense(data.totalFilteredExpense);
-		//   })
-		//   .catch((error) => console.error("Error fetching total expenses:", error));
-	};
-
-	const handleDateRangeChange = (dates) => {
-		// Handle date range change from the filter
-		// Call API to fetch total expenses based on selected date range
-		// Example API call:
-		// const startDate = dates[0].format("YYYY-MM-DD");
-		// const endDate = dates[1].format("YYYY-MM-DD");
-		// fetch(`/api/total-expenses?startDate=${startDate}&endDate=${endDate}`)
-		//   .then((response) => response.json())
-		//   .then((data) => setTotalFilteredExpense(data.totalFilteredExpense))
-		//   .catch((error) => console.error("Error fetching filtered expenses:", error));
-	};
-
 	return (
-		<div style={{ padding: "20px" }}>
-			<Row gutter={[16, 16]}>
-				<Col span={8}>
-					<Card title="Total Pengeluaran Hari Ini">
-						<div>{totalTodayExpense}</div>
-					</Card>
-				</Col>
-				<Col span={8}>
-					<Card title="Total Pengeluaran Bulan Ini">
+		<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+			{/* Card Pemasukan */}
+			<div className="bg-white rounded-lg shadow-lg p-6">
+				<div className="flex items-center justify-between">
+					<div className="flex items-center">
+						<div className="mr-4 bg-green-400 rounded-full p-3">
+							{/* Icon untuk Pemasukan */}
+							<IconTrendingUp
+								size={24}
+								strokeWidth={1.5}
+								color="#fff"
+							/>
+						</div>
+						{/* Judul untuk Pemasukan */}
 						<div>
+							<p className="text-lg font-semibold text-gray-800">
+								Pemasukan
+							</p>
+							<p className="text-sm text-gray-600">
+								Total Pemasukan
+							</p>
+						</div>
+					</div>
+					{/* Nilai Pemasukan */}
+					<div>
+						<p className="text-4xl font-bold text-gray-800">-</p>
+					</div>
+				</div>
+			</div>
+
+			{/* Card Pengeluaran */}
+			<div className="bg-white rounded-lg shadow-lg p-6">
+				<div className="flex items-center justify-between">
+					<div className="flex items-center">
+						<div className="mr-4 bg-red-400 rounded-full p-3">
+							{/* Icon untuk Pengeluaran */}
+							<IconArrowDown
+								size={24}
+								strokeWidth={1.5}
+								color="#fff"
+							/>
+						</div>
+						{/* Judul untuk Pengeluaran */}
+						<div>
+							<p className="text-lg font-semibold text-gray-800">
+								Pengeluaran
+							</p>
+							<p className="text-sm text-gray-600">
+								Total Pengeluaran
+							</p>
+						</div>
+					</div>
+					{/* Nilai Pengeluaran */}
+					<div>
+						<p className="text-sm font-bold text-gray-800">
 							{new Intl.NumberFormat("id-ID", {
 								style: "currency",
 								currency: "IDR",
 							}).format(data)}
-						</div>
-					</Card>
-				</Col>
-				<Col span={8}>
-					<Card title="Total Pengeluaran by Filter">
-						<RangePicker onChange={handleDateRangeChange} />
-						<Button
-							type="primary"
-							style={{
-								marginTop: "10px",
-								backgroundColor: "#001529",
-								borderColor: "#001529",
-							}}
-						>
-							Filter
-						</Button>
-						<div style={{ marginTop: "10px" }}></div>
-					</Card>
-				</Col>
-			</Row>
+						</p>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 };

@@ -9,6 +9,7 @@ const EditCategory = ({
 	initialValues,
 	fetchData,
 	handleAlert,
+	handleAlertError,
 }) => {
 	const [form] = Form.useForm();
 
@@ -35,10 +36,11 @@ const EditCategory = ({
 				);
 			}
 		} catch (error) {
-			if (error.data && error.data.status === 422) {
-				setErr({ message: error.response.message });
-			} else {
-				console.log("Error:", error);
+			const {
+				response: { data },
+			} = error;
+			if (data.status === 400) {
+				handleAlertError(`Kategori ${values.category_name} sudah ada`);
 			}
 		}
 	};

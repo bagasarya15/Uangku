@@ -29,14 +29,8 @@ const CategoryIndex = () => {
 					>
 						<Input
 							placeholder="Search"
-							value={props.searchValue}
 							onChange={props.handleSearchChange}
-							onKeyDown={(e) => {
-								if (e.key === "Enter") {
-									e.preventDefault();
-									props.fetchData(props.searchValue);
-								}
-							}}
+							onKeyDown={props.handleKeyDown}
 							style={{
 								width: "auto",
 								marginRight: "8px",
@@ -86,6 +80,7 @@ const CategoryIndex = () => {
 						user={user}
 						fetchData={props.fetchData}
 						handleAlert={props.handleAlert}
+						handleAlertError={props.handleAlertError}
 					/>
 				</div>
 			)}

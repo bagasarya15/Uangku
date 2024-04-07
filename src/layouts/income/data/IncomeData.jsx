@@ -1,14 +1,15 @@
+import dayjs from "dayjs";
 import Swal from "sweetalert2";
-import { Badge, Button, message } from "antd";
+import id from "dayjs/locale/id";
+import { Button, message } from "antd";
 import AuthUser from "../../utils/AuthUser";
+import EditIncome from "../component/EditIncome";
 import React, { useEffect, useState } from "react";
-import {
-	apiDeleteCategory,
-	apiGetCategory,
-} from "../../../services/CategoryApi";
-import EditCategory from "../component/EditCategory";
+import { apiDeleteIncome, apiGetIncome } from "../../../services/IncomeApi";
 
-const CategoryData = ({ render }) => {
+const IncomeData = ({ render }) => {
+	dayjs.locale(id);
+
 	const { user } = AuthUser();
 	const [err, setErr] = useState(null);
 	const [data, setData] = useState([]);
@@ -26,20 +27,16 @@ const CategoryData = ({ render }) => {
 		message.success(valMessage);
 	};
 
-	const handleAlertError = (errorMessage) => {
-		message.error(errorMessage);
-	};
-
-	const fetchData = async () => {
+	const fetchData = async (search) => {
 		setLoading(true);
 		try {
 			let params = {
 				page: pagination.current,
 				limit: pagination.pageSize,
-				search: searchValue,
+				search: search || "",
 				user_id: user?.data?.id,
 			};
-			const response = await apiGetCategory(params);
+			const response = await apiGetIncome(params);
 			if (response.status === 200) {
 				setData(response.records);
 				setPagination((prev) => ({
@@ -54,7 +51,7 @@ const CategoryData = ({ render }) => {
 	};
 
 	useEffect(() => {
-		fetchData(pagination);
+		fetchData();
 	}, [pagination.current, pagination.pageSize, searchValue]);
 
 	const handlePaginationChange = (page, pageSize) => {
@@ -66,17 +63,7 @@ const CategoryData = ({ render }) => {
 	};
 
 	const handleSearchChange = (e) => {
-		const searchInput = e.target.value;
-		if (searchInput.length >= 4) {
-			setSearchValue(searchInput);
-		}
-	};
-
-	const handleKeyDown = (e) => {
-		if (e.key === "Enter") {
-			e.preventDefault();
-			fetchData(searchValue);
-		}
+		setSearchValue(e.target.value);
 	};
 
 	const handleEdit = (record) => {
@@ -87,7 +74,7 @@ const CategoryData = ({ render }) => {
 	const handleDelete = (record) => {
 		Swal.fire({
 			title: "Konfirmasi Hapus",
-			text: `Anda Ingin Hapus Kategori ${record?.category_name}?`,
+			text: `Anda Ingin Hapus ${record?.name}?`,
 			icon: "warning",
 			showCancelButton: true,
 			confirmButtonText: "Hapus!",
@@ -98,18 +85,16 @@ const CategoryData = ({ render }) => {
 			width: "400px",
 		}).then((result) => {
 			if (result.isConfirmed) {
-				deleteCategory(record);
+				deleteIncome(record);
 			}
 		});
 	};
 
-	const deleteCategory = async (record) => {
+	const deleteIncome = async (record) => {
 		try {
-			const data = await apiDeleteCategory(record.id);
+			const data = await apiDeleteIncome(record.id);
 			if (data.status === 200) {
-				message.success(
-					`Kategori ${record.category_name} berhasil dihapus`
-				);
+				message.success(`Pemasukan ${record.name} berhasil dihapus`);
 				fetchData();
 			}
 		} catch (error) {
@@ -119,26 +104,32 @@ const CategoryData = ({ render }) => {
 
 	const columns = [
 		{
-			title: "Kategori",
-			dataIndex: "category_name",
-			key: "category_name",
-			render: (category_name) => category_name,
+			title: "Keterangan",
+			dataIndex: "name",
+			key: "name",
+			render: (name) => name,
+			width: 200,
 		},
 		{
-			title: "Tipe Kategori",
-			dataIndex: "category_type",
-			key: "category_type",
-			render: (category_type) => {
-				let color = "";
-				let displayText = category_type;
-				if (category_type === "Expense") {
-					color = "#bf3952";
-					displayText = "Pengeluaran";
-				} else if (category_type === "Income") {
-					color = "#3b82f6";
-					displayText = "Pemasukan";
-				}
-				return <Badge text={displayText} color={color} />;
+			title: "Jenis Pemasukan",
+			dataIndex: "category",
+			key: "category",
+			render: (category) => category?.category_name,
+		},
+		{
+			title: "Nominal",
+			dataIndex: "nominal",
+			key: "nominal",
+			render: (nominal) => `Rp. ${Number(nominal).toLocaleString()}`,
+		},
+		{
+			title: "Tanggal",
+			dataIndex: "income_datetime",
+			key: "income_datetime",
+			render: (income_datetime) => {
+				return dayjs(income_datetime).format(
+					"dddd, DD MMMM YYYY HH:mm"
+				);
 			},
 		},
 		{
@@ -168,14 +159,13 @@ const CategoryData = ({ render }) => {
 	return (
 		<>
 			{editModalVisible && (
-				<EditCategory
+				<EditIncome
 					visible={editModalVisible}
 					onCancel={() => setEditModalVisible(false)}
 					user={user}
 					fetchData={fetchData}
 					initialValues={selectedRow}
 					handleAlert={handleAlert}
-					handleAlertError={handleAlertError}
 				/>
 			)}
 			{render({
@@ -188,13 +178,11 @@ const CategoryData = ({ render }) => {
 				selectedRow: selectedRow,
 				fetchData: fetchData,
 				handleAlert: handleAlert,
-				handleAlertError: handleAlertError,
 				handleSearchChange: handleSearchChange,
-				handleKeyDown: handleKeyDown,
 				handlePaginationChange: handlePaginationChange,
 			})}
 		</>
 	);
 };
 
-export default CategoryData;
+export default IncomeData;
