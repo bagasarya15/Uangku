@@ -34,6 +34,12 @@ export const AuthRouter = [
 		path: "/register",
 		element: <RegisterPage />,
 	},
+
+	{
+		key: "404",
+		path: "*",
+		element: <NotFoundPage />,
+	},
 ];
 
 export const MainRouter = [
@@ -72,11 +78,5 @@ export const MainRouter = [
 		icon: <IconUserCog />,
 		element: <ProtectedRoute element={<UsersIndex />} />,
 		roles: ["admin"],
-	},
-
-	{
-		key: "404",
-		path: "*",
-		element: <NotFoundPage />,
 	},
 ];
