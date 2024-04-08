@@ -5,7 +5,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { apiLogin } from "../../../services/AuthApi";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import ToggleComponent from "../../utils/ToggleComponent";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
 	const token = localStorage.getItem("token");
@@ -208,7 +208,7 @@ const LoginPage = () => {
 					</div>
 
 					<div>
-						<div className="mt-3 text-sm">
+						{/* <div className="mt-3 text-sm">
 							Belum punya akun?{" "}
 							<span
 								className="underline text-blue-500"
@@ -217,6 +217,17 @@ const LoginPage = () => {
 							>
 								Daftar sekarang
 							</span>
+						</div> */}
+
+						<div className="mt-3 text-sm">
+							Belum punya akun?{" "}
+							<a
+								href="/register"
+								className="underline text-blue-500"
+								style={{ cursor: "pointer" }}
+							>
+								Daftar sekarang
+							</a>
 						</div>
 					</div>
 				</form>
