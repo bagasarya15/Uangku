@@ -9,6 +9,7 @@ import ToggleComponent from "../../utils/ToggleComponent";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
 
 const RegisterPage = () => {
+	const token = localStorage.getItem("token");
 	const [err, setErr] = useState({});
 	const [isSuccess, setIsSuccess] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -68,13 +69,17 @@ const RegisterPage = () => {
 				confirmPassword: "",
 			});
 		}
+
+		if (token) {
+			navigate("/");
+		}
 	}, [isSuccess]);
 
 	return (
 		<div className="flex h-screen bg-gray-200">
 			<div className="w-[500px] m-auto">
 				<div className="flex items-center justify-center">
-					<h1 className="text-2xl font-bold mb-3">REGISRASI AKUN</h1>
+					<h1 className="text-2xl font-bold mb-3">REGISTRASI AKUN</h1>
 				</div>
 				<form
 					onSubmit={handleSubmit(handleRegister)}

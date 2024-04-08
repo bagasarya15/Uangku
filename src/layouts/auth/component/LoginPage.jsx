@@ -8,6 +8,7 @@ import ToggleComponent from "../../utils/ToggleComponent";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+	const token = localStorage.getItem("token");
 	const [err, setErr] = useState({});
 	const [loading, setLoading] = useState(false);
 	const location = useLocation();
@@ -65,6 +66,10 @@ const LoginPage = () => {
 				state: null,
 			});
 		}, [4000]);
+
+		if (token) {
+			navigate("/");
+		}
 	}, []);
 
 	return (
