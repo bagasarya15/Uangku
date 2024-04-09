@@ -6,6 +6,7 @@ import AuthUser from "../../utils/AuthUser";
 import EditExpense from "../component/EditExpense";
 import React, { useEffect, useState } from "react";
 import { apiDeleteExpense, apiGetExpense } from "../../../services/ExpenseApi";
+import DetailExpense from "../component/DetailExpense";
 
 const ExpenseData = ({ render }) => {
 	dayjs.locale(id);
@@ -22,6 +23,8 @@ const ExpenseData = ({ render }) => {
 		total: 0,
 	});
 	const [editModalVisible, setEditModalVisible] = useState(false);
+	const [detailModalVisible, setDetailModalVisible] = useState(false);
+	const [isDeleting, setIsDeleting] = useState(false);
 
 	const handleAlert = (valMessage) => {
 		message.success(valMessage);
@@ -69,9 +72,11 @@ const ExpenseData = ({ render }) => {
 	const handleEdit = (record) => {
 		setSelectedRow(record);
 		setEditModalVisible(true);
+		setDetailModalVisible(false);
 	};
 
 	const handleDelete = (record) => {
+		setIsDeleting(true);
 		Swal.fire({
 			title: "Konfirmasi Hapus",
 			text: `Anda Ingin Hapus ${record?.name}?`,
@@ -86,6 +91,9 @@ const ExpenseData = ({ render }) => {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				deleteExpense(record);
+			} else {
+				setDetailModalVisible(false);
+				setIsDeleting(false);
 			}
 		});
 	};
@@ -99,7 +107,18 @@ const ExpenseData = ({ render }) => {
 			}
 		} catch (error) {
 			console.error("Error:", error);
+		} finally {
+			setIsDeleting(false);
 		}
+	};
+
+	const handleRowClick = (record) => {
+		setSelectedRow(record);
+		setDetailModalVisible(true);
+	};
+
+	const handleTableClick = (record) => {
+		handleRowClick(record);
 	};
 
 	const columns = [
@@ -107,30 +126,14 @@ const ExpenseData = ({ render }) => {
 			title: "Keterangan",
 			dataIndex: "name",
 			key: "name",
-			render: (name) => name,
 			width: 200,
-		},
-		{
-			title: "Jenis Pengeluaran",
-			dataIndex: "category",
-			key: "category",
-			render: (category) => category?.category_name,
+			render: (name) => name,
 		},
 		{
 			title: "Nominal",
 			dataIndex: "nominal",
 			key: "nominal",
 			render: (nominal) => `Rp. ${Number(nominal).toLocaleString()}`,
-		},
-		{
-			title: "Tanggal",
-			dataIndex: "expense_datetime",
-			key: "expense_datetime",
-			render: (expense_datetime) => {
-				return dayjs(expense_datetime).format(
-					"dddd, DD MMMM YYYY HH:mm"
-				);
-			},
 		},
 		{
 			title: "Aksi",
@@ -161,13 +164,25 @@ const ExpenseData = ({ render }) => {
 			{editModalVisible && (
 				<EditExpense
 					visible={editModalVisible}
-					onCancel={() => setEditModalVisible(false)}
+					onCancel={() => {
+						setEditModalVisible(false);
+						setDetailModalVisible(false);
+					}}
 					user={user}
 					fetchData={fetchData}
 					initialValues={selectedRow}
 					handleAlert={handleAlert}
 				/>
 			)}
+
+			{detailModalVisible && !editModalVisible && !isDeleting && (
+				<DetailExpense
+					visible={detailModalVisible}
+					onCancel={() => setDetailModalVisible(false)}
+					selectedRow={selectedRow}
+				/>
+			)}
+
 			{render({
 				err: err,
 				data: data,
@@ -180,6 +195,7 @@ const ExpenseData = ({ render }) => {
 				handleAlert: handleAlert,
 				handleSearchChange: handleSearchChange,
 				handlePaginationChange: handlePaginationChange,
+				handleTableClick: handleTableClick,
 			})}
 		</>
 	);

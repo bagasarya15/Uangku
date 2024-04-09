@@ -71,7 +71,12 @@ const ExpenseIndex = () => {
 								...column,
 								align: "center",
 								render: (text, record) => (
-									<div style={{ textAlign: "center" }}>
+									<div
+										style={{
+											display: "flex",
+											justifyContent: "center",
+										}}
+									>
 										{column.render
 											? column.render(text, record)
 											: text}
@@ -91,6 +96,9 @@ const ExpenseIndex = () => {
 								emptyText: props.err ? props.err : "No data",
 							}}
 							scroll={{ x: "100%" }}
+							onRow={(record) => ({
+								onClick: () => props.handleTableClick(record),
+							})}
 						/>
 
 						<AddExpense
