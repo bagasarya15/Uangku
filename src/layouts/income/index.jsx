@@ -88,6 +88,9 @@ const IncomeIndex = () => {
 							emptyText: props.err ? props.err : "No data",
 						}}
 						scroll={{ x: "100%" }}
+						onRow={(record) => ({
+							onClick: () => props.handleTableClick(record),
+						})}
 					/>
 
 					<AddExpense

@@ -6,6 +6,7 @@ import AuthUser from "../../utils/AuthUser";
 import EditIncome from "../component/EditIncome";
 import React, { useEffect, useState } from "react";
 import { apiDeleteIncome, apiGetIncome } from "../../../services/IncomeApi";
+import DetailIncome from "../component/DetailIncome";
 
 const IncomeData = ({ render }) => {
 	dayjs.locale(id);
@@ -22,6 +23,8 @@ const IncomeData = ({ render }) => {
 		total: 0,
 	});
 	const [editModalVisible, setEditModalVisible] = useState(false);
+	const [detailModalVisible, setDetailModalVisible] = useState(false);
+	const [isDeleting, setIsDeleting] = useState(false);
 
 	const handleAlert = (valMessage) => {
 		message.success(valMessage);
@@ -69,9 +72,11 @@ const IncomeData = ({ render }) => {
 	const handleEdit = (record) => {
 		setSelectedRow(record);
 		setEditModalVisible(true);
+		setDetailModalVisible(false);
 	};
 
 	const handleDelete = (record) => {
+		setIsDeleting(true);
 		Swal.fire({
 			title: "Konfirmasi Hapus",
 			text: `Anda Ingin Hapus ${record?.name}?`,
@@ -86,6 +91,9 @@ const IncomeData = ({ render }) => {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				deleteIncome(record);
+			} else {
+				setDetailModalVisible(false);
+				setIsDeleting(false);
 			}
 		});
 	};
@@ -102,6 +110,15 @@ const IncomeData = ({ render }) => {
 		}
 	};
 
+	const handleRowClick = (record) => {
+		setSelectedRow(record);
+		setDetailModalVisible(true);
+	};
+
+	const handleTableClick = (record) => {
+		handleRowClick(record);
+	};
+
 	const columns = [
 		{
 			title: "Keterangan",
@@ -111,26 +128,10 @@ const IncomeData = ({ render }) => {
 			width: 200,
 		},
 		{
-			title: "Jenis Pemasukan",
-			dataIndex: "category",
-			key: "category",
-			render: (category) => category?.category_name,
-		},
-		{
 			title: "Nominal",
 			dataIndex: "nominal",
 			key: "nominal",
 			render: (nominal) => `Rp. ${Number(nominal).toLocaleString()}`,
-		},
-		{
-			title: "Tanggal",
-			dataIndex: "income_datetime",
-			key: "income_datetime",
-			render: (income_datetime) => {
-				return dayjs(income_datetime).format(
-					"dddd, DD MMMM YYYY HH:mm"
-				);
-			},
 		},
 		{
 			title: "Aksi",
@@ -161,13 +162,25 @@ const IncomeData = ({ render }) => {
 			{editModalVisible && (
 				<EditIncome
 					visible={editModalVisible}
-					onCancel={() => setEditModalVisible(false)}
+					onCancel={() => {
+						setEditModalVisible(false);
+						setDetailModalVisible(false);
+					}}
 					user={user}
 					fetchData={fetchData}
 					initialValues={selectedRow}
 					handleAlert={handleAlert}
 				/>
 			)}
+
+			{detailModalVisible && !editModalVisible && !isDeleting && (
+				<DetailIncome
+					visible={detailModalVisible}
+					onCancel={() => setDetailModalVisible(false)}
+					selectedRow={selectedRow}
+				/>
+			)}
+
 			{render({
 				err: err,
 				data: data,
@@ -180,6 +193,7 @@ const IncomeData = ({ render }) => {
 				handleAlert: handleAlert,
 				handleSearchChange: handleSearchChange,
 				handlePaginationChange: handlePaginationChange,
+				handleTableClick: handleTableClick,
 			})}
 		</>
 	);

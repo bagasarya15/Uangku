@@ -7,6 +7,7 @@ import EditExpense from "../component/EditExpense";
 import React, { useEffect, useState } from "react";
 import { apiDeleteExpense, apiGetExpense } from "../../../services/ExpenseApi";
 import DetailExpense from "../component/DetailExpense";
+import DetailIncome from "../../income/component/DetailIncome";
 
 const ExpenseData = ({ render }) => {
 	dayjs.locale(id);
@@ -176,7 +177,7 @@ const ExpenseData = ({ render }) => {
 			)}
 
 			{detailModalVisible && !editModalVisible && !isDeleting && (
-				<DetailExpense
+				<DetailIncome
 					visible={detailModalVisible}
 					onCancel={() => setDetailModalVisible(false)}
 					selectedRow={selectedRow}

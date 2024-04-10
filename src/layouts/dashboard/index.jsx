@@ -106,7 +106,7 @@ const DashboardIndex = () => {
 								{new Intl.NumberFormat("id-ID", {
 									style: "currency",
 									currency: "IDR",
-								}).format(data?.incomeTotal)}
+								}).format(data?.incomeTotal || 0)}
 							</p>
 						</div>
 					</div>
@@ -140,7 +140,7 @@ const DashboardIndex = () => {
 								{new Intl.NumberFormat("id-ID", {
 									style: "currency",
 									currency: "IDR",
-								}).format(data?.expenseTotal)}
+								}).format(data?.expenseTotal || 0)}
 							</p>
 						</div>
 					</div>
@@ -175,7 +175,7 @@ const DashboardIndex = () => {
 								{new Intl.NumberFormat("id-ID", {
 									style: "currency",
 									currency: "IDR",
-								}).format(Math.abs(differenceTotal))}
+								}).format(Math.abs(differenceTotal || 0))}
 							</p>
 						</div>
 					</div>

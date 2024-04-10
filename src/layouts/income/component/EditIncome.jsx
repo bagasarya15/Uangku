@@ -79,7 +79,7 @@ const EditIncome = ({
 
 	return (
 		<Modal
-			title="Ubah Pengeluaran"
+			title="Ubah Pemasukan"
 			visible={visible}
 			onOk={onOk}
 			onCancel={handleCancel}
