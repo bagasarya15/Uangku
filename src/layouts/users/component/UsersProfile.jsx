@@ -108,6 +108,7 @@ const EditProfileModal = ({
 			name: userData?.name || "",
 			image: userData?.image || null,
 		});
+		setPreviewImage(userData?.image || null);
 		onCancel();
 		setErr(null);
 		setLoading(false);
