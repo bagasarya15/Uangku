@@ -2,7 +2,18 @@ import Swal from "sweetalert2";
 import React, { useState, useEffect } from "react";
 import DefaultUsersImage from "../../../assets/default.jpg";
 import { deleteImage, editProfile } from "../../../services/AuthApi";
-import { Modal, Form, Input, Button, Image, Spin, Alert } from "antd";
+import {
+	Modal,
+	Form,
+	Input,
+	Button,
+	Image,
+	Spin,
+	Alert,
+	Upload,
+	Space,
+} from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 
 const EditProfileModal = ({
 	visible,
@@ -16,6 +27,7 @@ const EditProfileModal = ({
 	const [loading, setLoading] = useState(false);
 	const [previewImage, setPreviewImage] = useState(null);
 	const [defaultImage, setDefaultImage] = useState(null);
+	const [fileList, setFileList] = useState([]);
 
 	useEffect(() => {
 		form.setFieldsValue({
@@ -27,11 +39,15 @@ const EditProfileModal = ({
 		setDefaultImage(userData?.image || null);
 	}, [userData]);
 
-	const handleFileChange = (event) => {
-		const file = event.target.files[0];
-		if (file) {
-			form.setFieldsValue({ image: file });
+	const handleChange = (info) => {
+		let fileList = [...info.fileList];
+		fileList = fileList.slice(-1);
+		setFileList(fileList);
+		if (fileList.length > 0) {
+			const file = fileList[0].originFileObj;
 			setPreviewImage(URL.createObjectURL(file));
+		} else {
+			setPreviewImage(null);
 		}
 	};
 
@@ -43,7 +59,9 @@ const EditProfileModal = ({
 			formData.append("username", values.username);
 			formData.append("email", values.email);
 			formData.append("name", values.name);
-			formData.append("image", values.image);
+			if (fileList.length > 0) {
+				formData.append("image", fileList[0].originFileObj);
+			}
 			const data = await editProfile(formData);
 			if (data.status === 200 && data.tokenUpdate) {
 				localStorage.setItem("token", data.tokenUpdate);
@@ -125,7 +143,7 @@ const EditProfileModal = ({
 				</Button>,
 				<Button
 					key="submit"
-					onClick={form.submit}
+					onClick={() => form.submit()}
 					disabled={loading}
 					style={{
 						position: "relative",
@@ -210,25 +228,30 @@ const EditProfileModal = ({
 						) : null}
 					</div>
 
-					<div className="d-flex align-items-center">
-						<input
-							accept="image/png, image/jpeg, image/jpg"
-							type="file"
-							className="block text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-blue-700 hover:file:bg-violet-100"
-							onChange={handleFileChange}
-							style={{ display: "inline-block" }}
-						/>
+					<Space align="start" className="flex gap-2">
+						<Upload
+							action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
+							listType="picture"
+							maxCount={1}
+							fileList={fileList}
+							onChange={handleChange}
+							showUploadList={false}
+						>
+							<Button icon={<UploadOutlined />}>
+								Upload Foto
+							</Button>
+						</Upload>
+
 						{defaultImage !== "default.jpg" && (
 							<Button
 								onClick={confirmDelete}
-								accept="image/png, image/jpeg, image/jpg"
-								type="file"
-								className="file:py-2 file:px-4 file:rounded-full file:text-sm file:font-semibold file:bg-transparent file:text-red-500 border border-red-500 hover:text-white hover:bg-red-500 hover:border-red-500 mt-3"
+								type="primary"
+								danger
 							>
 								Hapus Foto
 							</Button>
 						)}
-					</div>
+					</Space>
 				</Form.Item>
 			</Form>
 		</Modal>
