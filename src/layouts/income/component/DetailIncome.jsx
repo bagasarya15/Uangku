@@ -21,7 +21,7 @@ const DetailIncome = ({ visible, onCancel, selectedRow }) => {
 					Rp. {Number(selectedRow?.nominal).toLocaleString()}
 				</Descriptions.Item>
 				<Descriptions.Item label="Tanggal">
-					{dayjs(selectedRow?.expense_datetime).format(
+					{dayjs(selectedRow?.income_datetime).format(
 						"dddd, DD MMMM YYYY HH:mm"
 					)}
 				</Descriptions.Item>
