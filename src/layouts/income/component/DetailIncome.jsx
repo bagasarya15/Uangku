@@ -24,7 +24,7 @@ const DetailIncome = ({ visible, onCancel, selectedRow }) => {
 					{dayjs(selectedRow?.income_datetime).format(
 						"dddd, DD MMMM YYYY HH:mm"
 					)}
-				</Descriptions.Item>
+				</Descriptions.Item>s
 				{/* Add more details as needed */}
 			</Descriptions>
 		</Modal>
