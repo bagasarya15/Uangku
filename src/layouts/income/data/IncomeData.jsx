@@ -34,7 +34,7 @@ const IncomeData = ({ render }) => {
 		setLoading(true);
 		try {
 			let params = {
-				page: pagination.current,
+				page: search ? 1 : pagination.current,
 				limit: pagination.pageSize,
 				search: search || "",
 				user_id: user?.data?.id,
