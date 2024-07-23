@@ -220,14 +220,14 @@ const LoginPage = () => {
 						</div> */}
 
 						<div className="mt-3 text-sm">
-							Belum punya akun?{" "}
+							{/* Belum punya akun?{" "}
 							<a
 								href="/register"
 								className="underline text-blue-500"
 								style={{ cursor: "pointer" }}
 							>
 								Daftar sekarang
-							</a>
+							</a> */}
 						</div>
 					</div>
 				</form>
