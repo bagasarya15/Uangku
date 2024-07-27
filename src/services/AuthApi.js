@@ -38,7 +38,7 @@ export async function apiLogin(params) {
 
 export async function isAuthorized(values) {
   try {
-    let url = `/api/auth/authorize`;
+    let url = webserviceurlMain + "/auth/authorize";
     
     const response = await axios({
       method: "post",
