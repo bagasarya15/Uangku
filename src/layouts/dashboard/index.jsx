@@ -16,7 +16,6 @@ const { Option } = Select;
 
 const DashboardIndex = () => {
   const { user } = AuthUser();
-  console.log(user, "coba dpt g");
   const [data, setData] = useState([]);
   const [dataFilterExpense, setDataFilterExpense] = useState([]);
   const [loading, setLoading] = useState(false);
