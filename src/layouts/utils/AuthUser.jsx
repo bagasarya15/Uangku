@@ -7,19 +7,24 @@ const AuthUser = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const secretKey = import.meta.env.VITE_SECRET_KEY;
-  const bytes = CryptoJS.AES.decrypt(token.replace(/^"|"$/g, ""), secretKey);
-  const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
-  let decodedToken;
+  let decryptedData = null;
+  let decodedToken = null;
 
-  try {
-    decodedToken = token ? jwtDecode(decryptedData) : null;
-  } catch (error) {
-    console.error("Invalid token:", error);
+  if (token) {
+    try {
+      const bytes = CryptoJS.AES.decrypt(
+        token.replace(/^"|"$/g, ""),
+        secretKey
+      );
+      decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+      decodedToken = jwtDecode(decryptedData);
+    } catch (error) {
+      console.error("Failed to decrypt or decode token:", error);
+    }
   }
 
   useEffect(() => {
-    const decodedToken = token ? jwtDecode(decryptedData) : null;
     if (
       decodedToken &&
       decodedToken.exp &&
@@ -28,7 +33,7 @@ const AuthUser = () => {
       localStorage.removeItem("token");
       navigate("/login", { state: { isExpired: true } });
     }
-  }, []);
+  }, [decodedToken, navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
