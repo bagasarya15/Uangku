@@ -20,7 +20,7 @@ const ExpenseIndex = () => {
 		<div style={{ position: "relative", zIndex: 0 }}>
 			<ExpenseData
 				render={(props) => (
-					<div>
+					<div className="bg-white p-4 rounded-md">
 						<div
 							style={{
 								display: "flex",

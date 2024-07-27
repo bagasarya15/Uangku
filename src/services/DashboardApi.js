@@ -18,3 +18,20 @@ export async function apiDashboard(params) {
 		throw error;
 	}
 }
+
+export async function apiFilterExpenseByCategory(params) {
+	try {
+		const response = await axios({
+			method: "post",
+			data: params,
+			url: webserviceurlMain + "/dashboard/expense-with-category",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		return response.data;
+	} catch (error) {
+		console.error("API Dashboard Expense Error:", error);
+		throw error;
+	}
+}

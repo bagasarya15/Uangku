@@ -36,6 +36,26 @@ export async function apiLogin(params) {
 	}
 }
 
+export async function isAuthorized(values) {
+  try {
+    let url = `/api/auth/authorize`;
+    
+    const response = await axios({
+      method: "post",
+      url: url,
+      data: values,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("API Get Authorized Error:", error);
+    throw error;
+  }
+}
+
 export async function editProfile(params) {
 	try {
 		const response = await axios({

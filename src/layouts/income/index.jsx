@@ -19,7 +19,7 @@ const IncomeIndex = () => {
 	return (
 		<IncomeData
 			render={(props) => (
-				<div>
+				<div className="bg-white p-4 rounded-md">
 					<div
 						style={{
 							display: "flex",

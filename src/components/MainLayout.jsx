@@ -30,7 +30,7 @@ const MainLayout = () => {
 						style={{
 							padding: 24,
 							minHeight: 360,
-							background: colorBgContainer,
+							// background: colorBgContainer,
 							borderRadius: borderRadiusLG,
 						}}
 					>

@@ -6,7 +6,7 @@ const UserIndex = () => {
 	return (
 		<UserData
 			render={(props) => (
-				<div>
+				<div className="bg-white p-4 rounded-md">
 					<div
 						style={{
 							display: "flex",
