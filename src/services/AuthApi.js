@@ -73,6 +73,24 @@ export async function editProfile(params) {
 	}
 }
 
+export async function activatedAccount(params) {
+	try {
+		console.log(params, 'sampe ga')
+		const response = await axios({
+			method: "put",
+			data: params,
+			url: webserviceurlMain + "/auth/aktivasi",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		return response.data;
+	} catch (error) {
+		console.error("API Aktivasi Profile Error:", error);
+		throw error;
+	}
+}
+
 export async function deleteImage(params) {
 	try {
 		const response = await axios({

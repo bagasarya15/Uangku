@@ -108,18 +108,18 @@ const DashboardIndex = () => {
           <DatePicker
             value={startDate}
             onChange={(date) => setStartDate(date)}
-            className="border rounded-md mx-1 my-1"
+            className="border rounded-md mx-1 my-1 w-full sm:w-auto"
             placeholder="Tanggal Awal"
           />
           <DatePicker
             value={endDate}
             onChange={(date) => setEndDate(date)}
-            className="border rounded-md mx-1 my-1"
+            className="border rounded-md mx-1 my-1 w-full sm:w-auto"
             placeholder="Tanggal Akhir"
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
           <Card
             icon={<IconArrowUp size={24} strokeWidth={1.5} color="#fff" />}
             bgColor="bg-green-400"
@@ -227,19 +227,19 @@ const FilterExpenseCard = ({
       <DatePicker
         value={startDate}
         onChange={(date) => setStartDate(date)}
-        className="border rounded-md mx-1 my-1"
+        className="border rounded-md mx-1 my-1 w-full sm:w-auto"
         placeholder="Tanggal Awal"
       />
       <DatePicker
         value={endDate}
         onChange={(date) => setEndDate(date)}
-        className="border rounded-md mx-1 my-1"
+        className="border rounded-md mx-1 my-1 w-full sm:w-auto"
         placeholder="Tanggal Akhir"
       />
       <Select
         value={selectedCategory}
         onChange={(value) => setSelectedCategory(value)}
-        className="border rounded-md mx-1 my-1 w-72"
+        className="border rounded-md mx-1 my-1 w-full sm:w-auto"
         placeholder="Pilih Kategori"
       >
         {categories.map((category) => (
