@@ -1,0 +1,8 @@
+/* dark-theme.css */
+:root {
+  --ant-primary-color: #1890ff;
+  --ant-background-color: #141414;
+  --ant-text-color: #ffffff;
+  --ant-border-color: #434343;
+  /* Add more variables as needed */
+}

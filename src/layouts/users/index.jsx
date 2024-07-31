@@ -2,16 +2,21 @@ import React from "react";
 import { Input, Table } from "antd";
 import UserData from "./data/UserData";
 
-const UserIndex = () => {
+const UserIndex = ({ isDarkMode }) => {
   return (
     <UserData
       render={(props) => (
-        <div className="bg-white p-4 rounded-md">
+        <div className="p-4 rounded-md">
           <div
             style={{
               display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "flex-end",
+              alignItems: "center",
+              justifyContent: "end",
+              backgroundColor: isDarkMode ? "#1E1E2D" : "white",
+              padding: 10,
+              borderTopLeftRadius: 8,
+              borderTopRightRadius: 8,
+              gap: 2,
             }}
           >
             <Input
@@ -26,9 +31,6 @@ const UserIndex = () => {
               }}
               style={{
                 width: "auto",
-                marginRight: "8px",
-                marginBottom: "10px",
-                maxWidth: "200px",
               }}
             />
             {/* <Input
@@ -54,7 +56,6 @@ const UserIndex = () => {
               emptyText: props.err ? props.err : "No data",
             }}
             scroll={{ x: "100%" }}
-            style={{ marginTop: "10px" }}
           />
         </div>
       )}

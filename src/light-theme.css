@@ -1,0 +1,8 @@
+/* light-theme.css */
+:root {
+  --ant-primary-color: #1DA57A;
+  --ant-background-color: #ffffff;
+  --ant-text-color: #000000;
+  --ant-border-color: #d9d9d9;
+  /* Add more variables as needed */
+}

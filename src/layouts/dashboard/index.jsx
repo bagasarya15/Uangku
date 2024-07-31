@@ -14,7 +14,7 @@ import { getSelectCategory } from "../../services/CategoryApi";
 
 const { Option } = Select;
 
-const DashboardIndex = () => {
+const DashboardIndex = ({ isDarkMode }) => {
   const { user } = AuthUser();
   const [data, setData] = useState([]);
   const [dataFilterExpense, setDataFilterExpense] = useState([]);
@@ -103,7 +103,11 @@ const DashboardIndex = () => {
 
   return (
     <div className="space-y-10">
-      <div className="bg-white p-4 rounded-md">
+      <div
+        className={`${
+          isDarkMode ? "bg-sideBarDarkColor" : "bg-white"
+        } p-4 rounded-md`}
+      >
         <div className="flex flex-col sm:flex-row mb-4">
           <DatePicker
             value={startDate}
@@ -126,6 +130,7 @@ const DashboardIndex = () => {
             title="Pemasukan"
             subtitle="Total Pemasukan"
             amount={data?.incomeTotal || 0}
+            isDarkMode={isDarkMode}
           />
           <Card
             icon={<IconArrowDown size={24} strokeWidth={1.5} color="#fff" />}
@@ -133,7 +138,8 @@ const DashboardIndex = () => {
             title="Pengeluaran"
             subtitle="Total Pengeluaran"
             amount={data?.expenseTotal || 0}
-            isExpense={true} // New prop to indicate if it's an expense
+            isExpense={true}
+            isDarkMode={isDarkMode}
           />
           <Card
             icon={<IconTrendingUp size={24} strokeWidth={1.5} color="#fff" />}
@@ -142,12 +148,14 @@ const DashboardIndex = () => {
             subtitle="Total Selisih"
             amount={Math.abs(differenceTotal || 0)}
             isNegative={incomeTotal < expenseTotal}
+            isDarkMode={isDarkMode}
           />
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FilterExpenseCard
+          isDarkMode={isDarkMode}
           startDate={startDateExpenseByCategory}
           setStartDate={setStartDateExpenseByCategory}
           endDate={endDateExpenseByCategory}
@@ -163,55 +171,8 @@ const DashboardIndex = () => {
   );
 };
 
-const Card = ({
-  icon,
-  bgColor,
-  title,
-  subtitle,
-  amount,
-  isNegative,
-  isExpense,
-}) => {
-  const formatCurrency = (amount) => {
-    const formattedAmount = new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 2,
-    }).format(amount);
-
-    const [currency, number] = formattedAmount.split(/\s/);
-    return `${currency} ${isNegative ? "-" : ""}${number}`;
-  };
-
-  return (
-    <div className="bg-white rounded-lg shadow-lg p-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <div className={`mr-4 ${bgColor} rounded-full p-3`}>{icon}</div>
-          <div>
-            <p className="text-lg font-semibold text-gray-800">{title}</p>
-            <p className="text-sm text-gray-600">{subtitle}</p>
-          </div>
-        </div>
-        <div>
-          <p
-            className={`text-1xl font-bold ${
-              isExpense
-                ? "text-red-500"
-                : isNegative
-                ? "text-red-500"
-                : "text-green-500"
-            }`}
-          >
-            {formatCurrency(amount)}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const FilterExpenseCard = ({
+  isDarkMode,
   startDate,
   setStartDate,
   endDate,
@@ -222,7 +183,11 @@ const FilterExpenseCard = ({
   selectedCategory,
   isExpense,
 }) => (
-  <div className="bg-white p-4 rounded-md">
+  <div
+    className={`${
+      isDarkMode ? "bg-sideBarDarkColor" : "bg-white"
+    } p-4 rounded-md mb-5`}
+  >
     <div className="flex flex-col sm:flex-row mb-4">
       <DatePicker
         value={startDate}
@@ -249,6 +214,7 @@ const FilterExpenseCard = ({
         ))}
       </Select>
     </div>
+
     <Card
       icon={<IconArrowDown size={24} strokeWidth={1.5} color="#fff" />}
       bgColor="bg-red-400"
@@ -256,8 +222,74 @@ const FilterExpenseCard = ({
       subtitle="Pengeluaran Per Kategori"
       amount={amount}
       isExpense={isExpense}
+      isDarkMode={isDarkMode}
     />
   </div>
 );
+
+const Card = ({
+  icon,
+  bgColor,
+  title,
+  subtitle,
+  amount,
+  isNegative,
+  isExpense,
+  isDarkMode,
+}) => {
+  const formatCurrency = (amount) => {
+    const formattedAmount = new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 2,
+    }).format(amount);
+
+    const [currency, number] = formattedAmount.split(/\s/);
+    return `${currency} ${isNegative ? "-" : ""}${number}`;
+  };
+
+  return (
+    <div
+      className={`${
+        isDarkMode ? "bg-backgroundDarkColor" : "bg-white shadow-lg"
+      } p-6 rounded-lg`}
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center">
+          <div className={`mr-4 ${bgColor} rounded-full p-3`}>{icon}</div>
+          <div>
+            <p
+              className={`${
+                isDarkMode ? "bg-backgroundDarkColor" : "bg-white"
+              } text-md font-semibold`}
+            >
+              {title}
+            </p>
+            <p
+              className={`${
+                isDarkMode ? "bg-backgroundDarkColor" : "bg-white"
+              } text-xs mt-1`}
+            >
+              {subtitle}
+            </p>
+          </div>
+        </div>
+        <div>
+          <p
+            className={`text-xs font-bold ${
+              isExpense
+                ? "text-red-500"
+                : isNegative
+                ? "text-red-500"
+                : "text-green-500"
+            }`}
+          >
+            {formatCurrency(amount)}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default DashboardIndex;

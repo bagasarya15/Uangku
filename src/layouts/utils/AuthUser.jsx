@@ -30,6 +30,7 @@ const AuthUser = () => {
       decodedToken.exp &&
       decodedToken.exp < Date.now() / 1000
     ) {
+      localStorage.removeItem("theme");
       localStorage.removeItem("token");
       navigate("/login", { state: { isExpired: true } });
     }
