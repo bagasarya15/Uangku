@@ -1,7 +1,7 @@
 // UserData.js
 import { Avatar, Space, Tooltip, Switch, message } from "antd";
 import React, { useState, useEffect } from "react";
-import UserImage from "../../../assets/default.jpg";
+import UserImage from "../../../../public/assets/default.jpg";
 import { apiGetUsers } from "../../../services/UsersApi";
 import { activatedAccount } from "../../../services/AuthApi";
 

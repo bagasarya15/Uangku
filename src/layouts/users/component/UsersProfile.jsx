@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import React, { useState, useEffect } from "react";
-import DefaultUsersImage from "../../../assets/default.jpg";
+import DefaultUsersImage from "../../../../public/assets/default.jpg";
 import { deleteImage, editProfile } from "../../../services/AuthApi";
 import {
   Modal,

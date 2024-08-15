@@ -11,7 +11,7 @@ import {
 } from "@ant-design/icons";
 import Swal from "sweetalert2";
 import AuthUser from "../layouts/utils/AuthUser";
-import DefaultUsersImage from "../assets/default.jpg";
+import DefaultUsersImage from "../../public/assets/default.jpg";
 import EditProfileModal from "../layouts/users/component/UsersProfile";
 import { useNavigate } from "react-router-dom";
 
