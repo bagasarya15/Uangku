@@ -1,10 +1,16 @@
-import moment from "moment";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc"; 
+import customParseFormat from "dayjs/plugin/customParseFormat"; 
 import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, Select, Button } from "antd";
 import { apiUpdateIncome } from "../../../services/IncomeApi";
 import { getSelectCategory } from "../../../services/CategoryApi";
 
 const { Option } = Select;
+
+
+dayjs.extend(utc); 
+dayjs.extend(customParseFormat); 
 
 const EditIncome = ({
 	initialValues,
@@ -72,10 +78,8 @@ const EditIncome = ({
 	}, []);
 
 	const formattedDate = initialValues.income_datetime
-		? moment(initialValues.income_datetime, "YYYY-MM-DD, HH:mm").format(
-				"YYYY-MM-DDTHH:mm"
-		  )
-		: "";
+    ? dayjs(initialValues.income_datetime).utc().local().format("YYYY-MM-DDTHH:mm")
+    : "";
 
 	return (
 		<Modal
