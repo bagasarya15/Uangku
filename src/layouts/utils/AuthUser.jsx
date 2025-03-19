@@ -2,6 +2,8 @@ import { jwtDecode } from "jwt-decode";
 import CryptoJS from "crypto-js";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { isAuthorized } from "../../services/AuthApi";
+import { use } from "react";
 
 const AuthUser = () => {
   const navigate = useNavigate();
@@ -23,6 +25,25 @@ const AuthUser = () => {
       console.error("Failed to decrypt or decode token:", error);
     }
   }
+
+  const checkIsAuthorized = async () => {
+    try {
+      let data = {
+        token: decryptedData,
+        secret_key : secretKey
+      };
+      const response = await isAuthorized(data);
+      if (response.status != 200) {
+        navigate("/login", { state: { isExpired: true } });
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    checkIsAuthorized();
+  }, [])
 
   useEffect(() => {
     if (
