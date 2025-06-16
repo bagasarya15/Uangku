@@ -30,11 +30,11 @@ const ExpenseData = ({ render }) => {
     message.success(valMessage);
   };
 
-  const fetchData = async (search = "") => {
+  const fetchData = async (search = searchValue) => {
     setLoading(true);
     try {
       let params = {
-        page: pagination.current,
+        page:  pagination.current,
         limit: pagination.pageSize,
         search: search,
         user_id: user?.data?.id,
@@ -54,8 +54,9 @@ const ExpenseData = ({ render }) => {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData(searchValue); 
   }, [pagination.current, pagination.pageSize]);
+  
 
   const handlePaginationChange = (page, pageSize) => {
     setPagination((prev) => ({
@@ -74,6 +75,10 @@ const ExpenseData = ({ render }) => {
   };
 
   const handleSearch = () => {
+    setPagination((prev) => ({
+      ...prev,
+      current: 1
+    }));
     fetchData(searchValue);
   };
 

@@ -40,7 +40,7 @@ const ExpenseIndex = ({ isDarkMode }) => {
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault();
-                    props.fetchData(props.searchValue);
+                    props.handleSearch();
                   }
                 }}
                 style={{
@@ -53,7 +53,7 @@ const ExpenseIndex = ({ isDarkMode }) => {
               <Input
                 type="button"
                 value="Search"
-                onClick={() => props.fetchData(props.searchValue)}
+                onClick={() => props.handleSearch()}
                 style={{
                   width: "auto",
                   marginRight: "8px",
